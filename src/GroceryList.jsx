@@ -13,8 +13,7 @@ import {
 } from "firebase/firestore";
 
 const style = {
-  bg: `h-screen w-screen p-4 bg-black`,
-  container: `bg-slate-100 max-w-[400px] w-full rounded-md shadow-xl p-4`,
+  container: `bg-slate-100 max-w-[90%] rounded-md shadow-xl p-4 ml-4 mr-4 mt-8`,
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
   form: `flex justify-between`,
   input: `border p-2 w-full text-xl`,
@@ -22,7 +21,7 @@ const style = {
   count: `text-center p-2`,
 };
 
-function App() {
+function GroceryList() {
   const [groceryItems, setgroceryItems] = useState([]);
   const [input, setInput] = useState("");
 
@@ -66,7 +65,7 @@ function App() {
   };
 
   return (
-    <div className={style.bg}>
+    <div>
       <div className={style.container}>
         <h3 className={style.heading}>Grocery List</h3>
         <form onSubmit={createGroceryItem} className={style.form}>
@@ -101,4 +100,4 @@ function App() {
   );
 }
 
-export default App;
+export default GroceryList;
