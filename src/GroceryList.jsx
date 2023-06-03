@@ -23,11 +23,11 @@ const style = {
 };
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [groceryItems, setgroceryItems] = useState([]);
   const [input, setInput] = useState("");
 
-  // Create todo
-  const createTodo = async (e) => {
+  // Create Grocery Item (add)
+  const createGroceryItem = async (e) => {
     e.preventDefault(e);
     if (input === "") {
       alert("Please enter a valid todo");
@@ -40,59 +40,61 @@ function App() {
     setInput("");
   };
 
-  // Read todo from firebase
+  // Read Grocery Item from Firebase
   useEffect(() => {
     const q = query(collection(db, "grocery-item"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let todosArr = [];
-      querySnapshot.forEach((doc) => {
-        todosArr.push({ ...doc.data(), id: doc.id });
+      let groceriesArr = [];
+      querySnapshot.forEach((item) => {
+        groceriesArr.push({ ...item.data(), id: item.id });
       });
-      setTodos(todosArr);
+      setgroceryItems(groceriesArr);
     });
     return () => unsubscribe();
   }, []);
 
-  // Update todo in firebase
-  const toggleComplete = async (todo) => {
-    await updateDoc(doc(db, "grocery-item", todo.id), {
-      completed: !todo.completed,
+  // Update Grocery Item in Firebase
+  const toggleComplete = async (groceryItem) => {
+    await updateDoc(doc(db, "grocery-item", groceryItem.id), {
+      completed: !groceryItem.completed,
     });
   };
 
-  // Delete todo
-  const deleteTodo = async (id) => {
-    await deleteDoc(doc(db, "todos", id));
+  // Delete Grocery Item
+  const deleteGroceryItem = async (id) => {
+    await deleteDoc(doc(db, "grocery-item", id));
   };
 
   return (
     <div className={style.bg}>
       <div className={style.container}>
-        <h3 className={style.heading}>Todo App</h3>
-        <form onSubmit={createTodo} className={style.form}>
+        <h3 className={style.heading}>Grocery List</h3>
+        <form onSubmit={createGroceryItem} className={style.form}>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className={style.input}
             type="text"
-            placeholder="Add Todo"
+            placeholder="Add Grocery Item"
           />
           <button className={style.button}>
             <AiOutlinePlus size={30} />
           </button>
         </form>
         <ul>
-          {todos.map((todo, id) => (
+          {groceryItems.map((groceryItem, id) => (
             <GroceryListItems
               key={id}
-              todo={todo}
+              groceryItem={groceryItem}
               toggleComplete={toggleComplete}
-              deleteTodo={deleteTodo}
+              deleteGroceryItem={deleteGroceryItem}
             />
           ))}
         </ul>
-        {todos.length < 1 ? null : (
-          <p className={style.count}>{`You have ${todos.length} todos`}</p>
+        {groceryItems.length < 1 ? null : (
+          <p
+            className={style.count}
+          >{`You have ${groceryItems.length} groceryItems`}</p>
         )}
       </div>
     </div>

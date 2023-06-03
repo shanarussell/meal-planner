@@ -9,23 +9,29 @@ const style = {
   button: `cursor-pointer flex items-center`,
 };
 
-const GroceryListItems = ({ todo, toggleComplete, deleteTodo }) => {
+const GroceryListItems = ({
+  groceryItem,
+  toggleComplete,
+  deleteGroceryItem,
+}) => {
   return (
-    <li className={todo.completed ? style.liComplete : style.li}>
+    <li className={groceryItem.completed ? style.liComplete : style.li}>
       <div className={style.row}>
         <input
-          onChange={() => toggleComplete(todo)}
+          onChange={() => toggleComplete(groceryItem)}
           type="checkbox"
-          checked={todo.completed ? "checked" : ""}
+          checked={groceryItem.completed ? "checked" : ""}
         />
         <p
-          onClick={() => toggleComplete(todo)}
-          className={todo.completed ? style.textComplete : style.text}
+          onClick={() => toggleComplete(groceryItem)}
+          className={groceryItem.completed ? style.textComplete : style.text}
         >
-          {todo.text}
+          {groceryItem.text}
         </p>
       </div>
-      <button onClick={() => deleteTodo(todo.id)}>{<FaRegTrashAlt />}</button>
+      <button onClick={() => deleteGroceryItem(groceryItem.id)}>
+        {<FaRegTrashAlt />}
+      </button>
     </li>
   );
 };
