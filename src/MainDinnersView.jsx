@@ -21,9 +21,14 @@ const style = {
 };
 
 const MainDinnersView = () => {
+  //this component displays the weekly dinners section from the database
+  //it's looking for isDinner to be set to true
+  //isDinner can be set from the new recipe and single recipe views
+  //can also use the trash can icon to toggle isDinner and delete it from this view
+
   const [selectedDinners, setSelectedDinners] = useState([]);
 
-  // Read Selected Dinners from Firebase
+  // Read all recipes from DB and keep those where isDinner=true
   useEffect(() => {
     const q = query(collection(db, "recipes"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -35,7 +40,7 @@ const MainDinnersView = () => {
       });
 
       allRecipesArr.map((item) => {
-        if (item.thisWeek === true) {
+        if (item.isDinner === true) {
           selectedRecipesArr.push({ ...item, id: item.id });
         }
 
@@ -45,11 +50,11 @@ const MainDinnersView = () => {
     return () => unsubscribe();
   }, []);
 
-  //handle trash click (remove from list by changing thisWeek)
+  //handle trash click (remove from list by changing isDinner)
 
   const handleTrashClick = async (item) => {
     await updateDoc(doc(db, "recipes", item.id), {
-      thisWeek: !item.thisWeek,
+      isDinner: !item.isDinner,
     });
   };
 
