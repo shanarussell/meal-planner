@@ -24,34 +24,44 @@ const MainDinnersView = () => {
 
   // Read Selected Dinners from Firebase
   useEffect(() => {
-    const q = query(collection(db, "selected-dinners"));
+    const q = query(collection(db, "recipes"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let selectedDinnersArr = [];
+      let allRecipesArr = [];
+      let selectedRecipesArr = [];
+
       querySnapshot.forEach((item) => {
-        selectedDinnersArr.push({ ...item.data(), id: item.id });
+        allRecipesArr.push({ ...item.data(), id: item.id });
       });
 
-      setSelectedDinners(selectedDinnersArr);
+      allRecipesArr.map((item) => {
+        if (item.thisWeek === true) {
+          selectedRecipesArr.push({ ...item, id: item.id });
+        }
+
+        setSelectedDinners(selectedRecipesArr);
+      });
     });
     return () => unsubscribe();
   }, []);
 
-  //handle trash click (delete)
+  //handle trash click (remove from list by changing thisWeek)
 
-  const handleTrashClick = async (id) => {
-    await deleteDoc(doc(db, "selected-dinners", id));
+  const handleTrashClick = async (item) => {
+    await updateDoc(doc(db, "recipes", item.id), {
+      thisWeek: !item.thisWeek,
+    });
   };
 
   return (
     <div className={style.container}>
       <h3 className={style.heading}>Weekly Dinners</h3>
       <div className={style.dinnerGrid}>
-        {selectedDinners.map((day) => (
-          <div className={style.singleDinnerContainer} key={day.id}>
-            {day.recipeTitle}
+        {selectedDinners.map((item) => (
+          <div className={style.singleDinnerContainer} key={item.id}>
+            {item.recipeName}
             <div
               className={style.trashCan}
-              onClick={() => handleTrashClick(day.id)}
+              onClick={() => handleTrashClick(item)}
             >
               <FaRegTrashAlt />
             </div>
