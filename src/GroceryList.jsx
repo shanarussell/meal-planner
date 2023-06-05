@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
-import GroceryListItems from "./GroceryListItems";
+import { AiOutlinePlus, AiOutlineCloseSquare } from "react-icons/ai";
+import { FaRegTrashAlt  } from "react-icons/fa";
 import { db } from "./firebase";
 import {
   query,
@@ -13,11 +13,15 @@ import {
 } from "firebase/firestore";
 
 const style = {
-  container: `bg-slate-100 max-w-[90%] rounded-md shadow-xl p-4 ml-4 mr-4 mt-8`,
+  container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8`,
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
   form: `flex justify-between`,
   input: `border p-2 w-full text-xl`,
   button: `border p-4 ml-2 bg-[#2EB62C] text-slate-100`,
+  groceryItemContainer: `flex flex-row flex-wrap mt-4`,
+  groceryItem: `flex flex-row border bg-[#2EB62C] rounded-lg shadow align-middle mr-2 mt-2`,
+  groceryItemText: `text-slate-100 ml-5 mt-3 uppercase font-bold`,
+  trashButton: `ml-5 pr-3 mt-3 mb-3 text-stone-900 text-2xl`,
   count: `text-center p-2`,
 };
 
@@ -29,12 +33,11 @@ function GroceryList() {
   const createGroceryItem = async (e) => {
     e.preventDefault(e);
     if (input === "") {
-      alert("Please enter a valid todo");
+      alert("Please enter a valid grocery item");
       return;
     }
     await addDoc(collection(db, "grocery-item"), {
-      text: input,
-      completed: false,
+      groceryItem: input,
     });
     setInput("");
   };
@@ -51,13 +54,6 @@ function GroceryList() {
     });
     return () => unsubscribe();
   }, []);
-
-  // Update Grocery Item in Firebase
-  const toggleComplete = async (groceryItem) => {
-    await updateDoc(doc(db, "grocery-item", groceryItem.id), {
-      completed: !groceryItem.completed,
-    });
-  };
 
   // Delete Grocery Item
   const deleteGroceryItem = async (id) => {
@@ -80,20 +76,27 @@ function GroceryList() {
             <AiOutlinePlus size={30} />
           </button>
         </form>
-        <ul>
+
+        <div className={style.groceryItemContainer}>
           {groceryItems.map((groceryItem, id) => (
-            <GroceryListItems
-              key={id}
-              groceryItem={groceryItem}
-              toggleComplete={toggleComplete}
-              deleteGroceryItem={deleteGroceryItem}
-            />
+            <div className={style.groceryItem} key={id}>
+              <div className={style.groceryItemText}>
+                {groceryItem.groceryItem}
+              </div>
+              <button
+                className={style.trashButton}
+                onClick={() => deleteGroceryItem(groceryItem.id)}
+              >
+                {<AiOutlineCloseSquare />}
+              </button>
+            </div>
           ))}
-        </ul>
+        </div>
+
         {groceryItems.length < 1 ? null : (
           <p
             className={style.count}
-          >{`You have ${groceryItems.length} groceryItems`}</p>
+          >{`You have ${groceryItems.length} grocery list items`}</p>
         )}
       </div>
     </div>

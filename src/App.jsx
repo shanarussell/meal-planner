@@ -6,23 +6,17 @@ import MainRecipesView from "./MainRecipesView";
 
 const style = {
   bg: `h-screen w-screen p-4 bg-black`,
-  mainContainer: `grid grid-cols-4 gap-1`,
-  leftContainer: `col-span-1`,
-  rightContainer: `col-span-3`,
+  mainContainer: `flex flex-col pr-5 pl-8`,
 };
 
 function App() {
   return (
     <div className={style.mainContainer}>
-      <div className={style.leftContainer}>
-        <GroceryList />
-      </div>
-      <div className={style.rightContainer}>
         <MainDinnersView />
         <MainLunchesView />
         <MainBreakfastsView />
         <MainRecipesView />
-      </div>
+        <GroceryList />
     </div>
   );
 }

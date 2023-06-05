@@ -8,7 +8,9 @@ import {
   doc,
   addDoc,
   deleteDoc,
+  getDocs, where,
 } from "firebase/firestore";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 const style = {
   recipeAndButtonsContainer: `flex flex-col`,
@@ -19,13 +21,22 @@ const style = {
   text: `text-lg font-bold text-left text-gray-800 p-2`,
   singleRecipe: `bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   button: `bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  ingredientsContainer: `flex flex-row mb-1`,
+  plusButton: `bg-[#2EB62C] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
 };
 
 const RecipeSingleView = ({ selectedRecipe }) => {
- 
   const ingredientsArr = selectedRecipe.recipeIngredients;
-  const listIngredients = ingredientsArr.map((item) => (
-    <li key={item}>{item}</li>
+  const listIngredients = ingredientsArr.map((item, index) => (
+    <div className={style.ingredientsContainer} key={index}>
+      <div
+        className={style.plusButton}
+        onClick={(e) => addSingleToGroceryList(e.target.value, item)}
+      >
+        {<AiOutlineShoppingCart />}
+      </div>
+      <div>{item}</div>
+    </div>
   ));
 
   const instructionsArr = selectedRecipe.recipeInstructions;
@@ -52,9 +63,25 @@ const RecipeSingleView = ({ selectedRecipe }) => {
       isBreakfast: true,
     });
   };
-  
 
- 
+  //add single ingredient to the grocery list
+  const addSingleToGroceryList = async (e, item) => {
+    // Query the collection to check if the item already exists
+    const querySnapshot = await getDocs(
+      query(collection(db, "grocery-item"), where("groceryItem", "==", item))
+    );
+
+    // If the item already exists, don't add it again
+    if (!querySnapshot.empty) {
+      console.log("Item already exists in the database.");
+      return;
+    }
+
+    // Add the item to the database if it doesn't exist
+    await addDoc(collection(db, "grocery-item"), {
+      groceryItem: item,
+    });
+  };
 
   return (
     <div className={style.recipeAndButtonsContainer}>
@@ -77,6 +104,7 @@ const RecipeSingleView = ({ selectedRecipe }) => {
         >
           + Breakfasts
         </button>
+        
       </div>
       <div className={style.recipeContainer}>
         <div className={style.recipeTitle}>{selectedRecipe.recipeName}</div>
