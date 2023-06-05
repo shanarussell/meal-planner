@@ -16,7 +16,8 @@ const style = {
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
   dinnerGrid: `flex justify-between`,
   singleDinnerContainer: `border p-4 w-[15%] text-center`,
-  trashCan: ``,
+  trashCan: `ml-3`,
+  singleRecipe: `flex-row bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
 };
 
 const MainDinnersView = () => {
@@ -57,14 +58,14 @@ const MainDinnersView = () => {
       <h3 className={style.heading}>Weekly Dinners</h3>
       <div className={style.dinnerGrid}>
         {selectedDinners.map((item) => (
-          <div className={style.singleDinnerContainer} key={item.id}>
+          <div className={style.singleRecipe} key={item.id}>
             {item.recipeName}
-            <div
+            <button
               className={style.trashCan}
               onClick={() => handleTrashClick(item)}
             >
               <FaRegTrashAlt />
-            </div>
+            </button>
           </div>
         ))}
       </div>
