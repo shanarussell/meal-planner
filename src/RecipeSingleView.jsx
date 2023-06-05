@@ -22,6 +22,7 @@ const style = {
 };
 
 const RecipeSingleView = ({ selectedRecipe }) => {
+ 
   const ingredientsArr = selectedRecipe.recipeIngredients;
   const listIngredients = ingredientsArr.map((item) => (
     <li key={item}>{item}</li>
@@ -32,39 +33,48 @@ const RecipeSingleView = ({ selectedRecipe }) => {
     <li key={item}>{item}</li>
   ));
 
- 
   // add to category (refactor these 3 into 1 later)
-  const addToDinners = async (e) => {
-    e.preventDefault(e);
-    await addDoc(collection(db, "recipes"), {
+
+  const addToDinners = async (selectedRecipe) => {
+    await updateDoc(doc(db, "recipes", selectedRecipe.id), {
       isDinner: true,
     });
   };
 
-  const addToLunches = async (e) => {
-    e.preventDefault(e);
-    await addDoc(collection(db, "recipes"), {
+  const addToLunches = async (selectedRecipe) => {
+    await updateDoc(doc(db, "recipes", selectedRecipe.id), {
       isLunch: true,
     });
   };
 
-  const addToBreakfasts = async (e) => {
-    e.preventDefault(e);
-    await addDoc(collection(db, "recipes"), {
+  const addToBreakfasts = async (selectedRecipe) => {
+    await updateDoc(doc(db, "recipes", selectedRecipe.id), {
       isBreakfast: true,
     });
   };
+  
+
+ 
 
   return (
     <div className={style.recipeAndButtonsContainer}>
       <div className={style.buttonsContainer}>
-        <button className={style.button} onClick={addToDinners}>
+        <button
+          className={style.button}
+          onClick={() => addToDinners(selectedRecipe)}
+        >
           + Dinners
         </button>
-        <button className={style.button} onClick={addToLunches}>
+        <button
+          className={style.button}
+          onClick={() => addToLunches(selectedRecipe)}
+        >
           + Lunches
         </button>
-        <button className={style.button} onClick={addToBreakfasts}>
+        <button
+          className={style.button}
+          onClick={() => addToBreakfasts(selectedRecipe)}
+        >
           + Breakfasts
         </button>
       </div>
