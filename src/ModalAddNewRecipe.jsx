@@ -1,4 +1,5 @@
 import RecipeAddNew from "./RecipeAddNew";
+import PropTypes from "prop-types";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
@@ -37,6 +38,10 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
       <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
     </>
   );
+};
+
+ModalAddNewRecipe.propTypes = {
+  setNewRecipeModal: PropTypes.func,
 };
 
 export default ModalAddNewRecipe;

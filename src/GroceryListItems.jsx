@@ -1,4 +1,5 @@
 import { FaRegTrashAlt } from "react-icons/fa";
+import PropTypes from "prop-types";
 
 const style = {
   li: `flex justify-between bg-slate-200 p-4 my-2 capitalize`,
@@ -34,6 +35,12 @@ const GroceryListItems = ({
       </button>
     </li>
   );
+};
+
+GroceryListItems.propTypes = {
+  groceryItem: PropTypes.object,
+  toggleComplete: PropTypes.func,
+  deleteGroceryItem: PropTypes.func,
 };
 
 export default GroceryListItems;

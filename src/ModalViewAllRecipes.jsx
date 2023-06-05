@@ -1,5 +1,5 @@
-import React from "react";
-import RecipeViewAll from './RecipeViewAll'
+import PropTypes from "prop-types";
+import RecipeViewAll from "./RecipeViewAll";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
@@ -32,13 +32,16 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
             <div className={style.modalTextContainer}>
               <RecipeViewAll />
             </div>
-            
           </div>
         </div>
       </div>
       <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
     </>
   );
+};
+
+ModalViewAllRecipes.propTypes = {
+  setViewRecipesModal: PropTypes.func,
 };
 
 export default ModalViewAllRecipes;

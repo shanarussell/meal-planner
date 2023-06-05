@@ -9,7 +9,7 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { AiOutlinePlus } from "react-icons/ai";
+import RecipeSingleView from "./RecipeSingleView";
 
 const style = {
   greyContainer: `flex-col bg-slate-100 w-full rounded-md shadow-xl p-4`,
@@ -19,7 +19,9 @@ const style = {
 };
 
 const RecipeViewAll = () => {
-    const [allRecipes, setAllRecipes] = useState([]);
+  const [allRecipes, setAllRecipes] = useState([]);
+  const [listAll, setListAll] = useState(true);
+  const [selectedRecipe, setSelectedRecipe] = useState();
 
   // Read Recipes from Firebase
   useEffect(() => {
@@ -35,13 +37,28 @@ const RecipeViewAll = () => {
     return () => unsubscribe();
   }, []);
 
-  const listAllRecipes = allRecipes.map((recipe) => <div className={style.singleRecipe} key={recipe.id}>{recipe.recipeName}</div>);
-  
+  const handleClick = (recipe) => {
+    //if a recipe is clicked, the list hides and a single is shown
+    setListAll(false);
+    setSelectedRecipe(recipe);
+  };
+
+  const listAllRecipes = allRecipes.map((recipe) => (
+    <div
+      className={style.singleRecipe}
+      key={recipe.id}
+      onClick={() => handleClick(recipe)}
+    >
+      {recipe.recipeName}
+    </div>
+  ));
+
+
 
   return (
     <div className={style.greyContainer}>
       <div className={style.recipeContainer}>
-        {listAllRecipes}
+        {listAll ? listAllRecipes : <RecipeSingleView selectedRecipe={selectedRecipe} />}
       </div>
     </div>
   );
