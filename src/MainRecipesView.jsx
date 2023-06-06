@@ -8,7 +8,7 @@ const style = {
   recipeGrid: `grid grid-cols-4 gap-1`,
   singleRecipeContainer: `border p-4 w-[15%] text-center`,
   buttonContainer: `flex flex-auto items-center justify-around`,
-  mainButtons: `bg-[#2EB62C] text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
+  mainButtons: `bg-[#5D9C59] text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
 };
 
 const MainRecipesView = () => {

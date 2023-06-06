@@ -14,10 +14,12 @@ import { FaRegTrashAlt } from "react-icons/fa";
 const style = {
   container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8`,
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
-  dinnerGrid: `flex justify-between`,
-  singleDinnerContainer: `border p-4 w-[15%] text-center`,
-  trashCan: `ml-3`,
-  singleRecipe: `flex-row bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  dinnerGrid: `flex justify-around`,
+  trashCan: `text-right text-white`,
+  singleRecipeContainer: `h-56 w-64 bg-[#5D9C59] m-3 py-3 px-6 rounded shadow`,
+  singleRecipeImageContainer: `box-border h-36 mt-2 mb-2`,
+  thumbnailImage: `h-full w-full object-cover`,
+  recipeTitle: `text-md font-bold text-left text-white`,
 };
 
 const MainDinnersView = () => {
@@ -63,14 +65,16 @@ const MainDinnersView = () => {
       <h3 className={style.heading}>Weekly Dinners</h3>
       <div className={style.dinnerGrid}>
         {selectedDinners.map((item) => (
-          <div className={style.singleRecipe} key={item.id}>
-            {item.recipeName}
-            <button
-              className={style.trashCan}
-              onClick={() => handleTrashClick(item)}
-            >
-              <FaRegTrashAlt />
-            </button>
+          <div className={style.singleRecipeContainer} key={item.id}>
+            <div className={style.singleRecipeImageContainer}>
+              <img className={style.thumbnailImage} src={item.imagePath} />
+            </div>
+            <div className={style.recipeTitle}> {item.recipeName}</div>
+            <div className={style.trashCan}>
+              <button onClick={() => handleTrashClick(item)}>
+                <FaRegTrashAlt />
+              </button>
+            </div>
           </div>
         ))}
       </div>

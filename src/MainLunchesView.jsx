@@ -16,7 +16,7 @@ const style = {
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
   recipeGrid: `flex justify-between`,
   trashCan: `ml-3`,
-  singleRecipe: `flex-row bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  singleRecipe: `flex-row bg-[#5D9C59] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
 };
 
 const MainLunchesView = () => {

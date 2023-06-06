@@ -24,16 +24,21 @@ const style = {
   recipeTitle: `text-5xl font-bold text-left text-gray-800 p-2`,
   heading: `text-2xl font-bold text-left text-gray-800 p-2 mt-4`,
   text: `text-lg font-bold text-left text-gray-800 p-2`,
-  singleRecipe: `bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
-  button: `bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  singleRecipe: `bg-[#5D9C59] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  button: `bg-[#5D9C59] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  editButton: `bg-[#DF2E38] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  deleteButton: `bg-[#DF2E38] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   ingredientsContainer: `flex flex-row mb-1`,
-  plusButton: `bg-[#2EB62C] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
-  imageContainer: `h-48 w-96`,
-  image: `object-contain`,
+  plusButton: `bg-[#5D9C59] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
+  imageContainer: `h-64 w-96`,
+  image: `h-full w-full object-cover`,
+  editContainer: `flex flex-row`,
+  editTitleButton: `bg-[#5D9C59] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
 };
 
 const RecipeSingleView = ({ selectedRecipe }) => {
   const [imageDisplay, setImageDisplay] = useState([]);
+  const [editMode, setEditMode] = useState(false);
 
   const ingredientsArr = selectedRecipe.recipeIngredients;
   const listIngredients = ingredientsArr.map((item, index) => (
@@ -71,6 +76,18 @@ const RecipeSingleView = ({ selectedRecipe }) => {
     await updateDoc(doc(db, "recipes", selectedRecipe.id), {
       isBreakfast: true,
     });
+  };
+
+  const editRecipe = () => {
+    setEditMode(true);
+  };
+
+  const saveEdits = () => {
+    setEditMode(false);
+  };
+
+  const deleteRecipe = async (selectedRecipe) => {
+    
   };
 
   //add single ingredient to the grocery list
@@ -126,9 +143,32 @@ const RecipeSingleView = ({ selectedRecipe }) => {
         >
           + Breakfasts
         </button>
+        {editMode ? (
+          <button
+            className={style.editButton}
+            onClick={() => saveEdits(selectedRecipe)}
+          >
+            Save Edits
+          </button>
+        ) : (
+          <button className={style.editButton} onClick={() => editRecipe()}>
+            Edit Recipe
+          </button>
+        )}
+
+        <button
+          className={style.deleteButton}
+          onClick={() => deleteRecipe(selectedRecipe)}
+        >
+          Delete Recipe
+        </button>
       </div>
       <div className={style.recipeContainer}>
-        <div className={style.recipeTitle}>{selectedRecipe.recipeName}</div>
+        <div className={style.editContainer}>
+         
+            <div className={style.recipeTitle}>{selectedRecipe.recipeName}</div>
+          
+        </div>
         <div className={style.imageContainer}>
           <img className={style.image} src={imageDisplay} />
         </div>

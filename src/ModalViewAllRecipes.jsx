@@ -7,7 +7,7 @@ const style = {
   modalOuterContainer: `rounded-lg shadow-lg flex flex-col w-full bg-white outline-none`,
   modalHeader: `flex items-start justify-between p-5 border-b rounded-t`,
   modalTitle: `text-3xl font-semibold`,
-  modalXButton: `p-1 ml-auto bg-transparent border-0 text-red-500 float-right text-3xl leading-none font-semibold outline-none`,
+  modalXButton: `p-1 ml-auto bg-transparent border-0 text-[#DF2E38] float-right text-3xl leading-none font-semibold outline-none`,
   modalTextContainer: `relative p-6`,
 };
 

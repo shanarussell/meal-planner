@@ -13,9 +13,12 @@ import RecipeSingleView from "./RecipeSingleView";
 
 const style = {
   greyContainer: `flex-col bg-slate-100 w-full rounded-md shadow-xl p-4`,
-  heading: `text-xl font-bold text-left text-gray-800 p-2`,
   recipeContainer: `flex flex-row basis-full flex-wrap justify-stretch`,
-  singleRecipe: `bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  singleRecipeContainer: `h-56 w-64 bg-[#C7E8CA] m-3 py-3 px-6 rounded shadow`,
+  singleRecipeImageContainer: `box-border h-36 mt-2 mb-2`,
+  singleRecipeTextContainer: ``,
+  thumbnailImage: `h-full w-full object-cover`,
+  recipeTitle: `text-md font-bold text-left text-gray-800`,
 };
 
 const RecipeViewAll = () => {
@@ -53,11 +56,16 @@ const RecipeViewAll = () => {
   //lists all the recipes from the allRecipes state as divs with button styles
   const listAllRecipes = allRecipes.map((recipe) => (
     <div
-      className={style.singleRecipe}
+      className={style.singleRecipeContainer}
       key={recipe.id}
       onClick={() => handleClick(recipe)}
     >
-      {recipe.recipeName}
+      <div className={style.singleRecipeImageContainer}>
+        <img className={style.thumbnailImage} src={recipe.imagePath} />
+      </div>
+      <div className={style.singleRecipeTextContainer}>
+        <h3 className={style.recipeTitle}>{recipe.recipeName}</h3>
+      </div>
     </div>
   ));
 
