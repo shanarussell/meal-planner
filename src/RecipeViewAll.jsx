@@ -20,7 +20,7 @@ const style = {
 
 const RecipeViewAll = () => {
   //this is the All Recipes view that is launched from ModalViewAllRecipes
-  //It can also launch the single recipe view from the RecipeSingleView component
+  //It can also launch the single recipe is generated from the RecipeSingleView component
   //It reads the recipes from the database and adds them to the allRecipes state
   //listAll state starts with true, so the list of recipes is shown
   //this listAll does not require another component, it's done in the listAllRecipes function

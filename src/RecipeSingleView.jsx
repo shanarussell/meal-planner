@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { db } from "./firebase";
 import {
@@ -9,18 +9,19 @@ import {
   doc,
   addDoc,
   deleteDoc,
-  getDocs, where,
+  getDocs,
+  where,
 } from "firebase/firestore";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import React from "react";
 import { ref, listAll, getDownloadURL, getStorage } from "firebase/storage";
-import {storage} from "./firebase"
+import { storage } from "./firebase";
 
 const style = {
   recipeAndButtonsContainer: `flex flex-col`,
   buttonsContainer: `flex flex-row basis-full flex-wrap justify-stretch`,
   recipeContainer: `flex flex-col basis-full flex-wrap justify-stretch`,
-  recipeTitle: `text-4xl font-bold text-left text-gray-800 p-2`,
+  recipeTitle: `text-5xl font-bold text-left text-gray-800 p-2`,
   heading: `text-2xl font-bold text-left text-gray-800 p-2 mt-4`,
   text: `text-lg font-bold text-left text-gray-800 p-2`,
   singleRecipe: `bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
@@ -32,8 +33,7 @@ const style = {
 };
 
 const RecipeSingleView = ({ selectedRecipe }) => {
-
-  const [imageDisplay, setImageDisplay] = useState([])
+  const [imageDisplay, setImageDisplay] = useState([]);
 
   const ingredientsArr = selectedRecipe.recipeIngredients;
   const listIngredients = ingredientsArr.map((item, index) => (
@@ -93,19 +93,17 @@ const RecipeSingleView = ({ selectedRecipe }) => {
   };
 
   //get image
-  const imageListRef = ref(storage, `${selectedRecipe.recipeName}/`)
+  const imageListRef = ref(storage, `${selectedRecipe.recipeName}/`);
   useEffect(() => {
     listAll(imageListRef).then((response) => {
       response.items.forEach((item) => {
         getDownloadURL(item).then((url) => {
-          setImageDisplay(url)
-        })
-      })
-    })
-    console.log(imageDisplay)
-  }, [])
-
-  
+          setImageDisplay(url);
+        });
+      });
+    });
+    console.log(imageDisplay);
+  }, []);
 
   return (
     <div className={style.recipeAndButtonsContainer}>
@@ -128,13 +126,13 @@ const RecipeSingleView = ({ selectedRecipe }) => {
         >
           + Breakfasts
         </button>
-        
       </div>
       <div className={style.recipeContainer}>
-        <div className={style.imageContainer}>
-          <img className={style.image} src={imageDisplay}/>
-      </div>
         <div className={style.recipeTitle}>{selectedRecipe.recipeName}</div>
+        <div className={style.imageContainer}>
+          <img className={style.image} src={imageDisplay} />
+        </div>
+
         <div className={style.heading}>Ingredients:</div>
         <div className={style.text}>{listIngredients}</div>
         <div className={style.heading}>Instructions:</div>
