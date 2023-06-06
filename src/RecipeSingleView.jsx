@@ -1,3 +1,4 @@
+import {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import { db } from "./firebase";
 import {
@@ -11,6 +12,9 @@ import {
   getDocs, where,
 } from "firebase/firestore";
 import { AiOutlineShoppingCart } from "react-icons/ai";
+import React from "react";
+import { ref, listAll, getDownloadURL, getStorage } from "firebase/storage";
+import {storage} from "./firebase"
 
 const style = {
   recipeAndButtonsContainer: `flex flex-col`,
@@ -23,9 +27,14 @@ const style = {
   button: `bg-[#2EB62C] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   ingredientsContainer: `flex flex-row mb-1`,
   plusButton: `bg-[#2EB62C] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
+  imageContainer: `h-48 w-96`,
+  image: `object-contain`,
 };
 
 const RecipeSingleView = ({ selectedRecipe }) => {
+
+  const [imageDisplay, setImageDisplay] = useState([])
+
   const ingredientsArr = selectedRecipe.recipeIngredients;
   const listIngredients = ingredientsArr.map((item, index) => (
     <div className={style.ingredientsContainer} key={index}>
@@ -83,6 +92,21 @@ const RecipeSingleView = ({ selectedRecipe }) => {
     });
   };
 
+  //get image
+  const imageListRef = ref(storage, `${selectedRecipe.recipeName}/`)
+  useEffect(() => {
+    listAll(imageListRef).then((response) => {
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setImageDisplay(url)
+        })
+      })
+    })
+    console.log(imageDisplay)
+  }, [])
+
+  
+
   return (
     <div className={style.recipeAndButtonsContainer}>
       <div className={style.buttonsContainer}>
@@ -107,6 +131,9 @@ const RecipeSingleView = ({ selectedRecipe }) => {
         
       </div>
       <div className={style.recipeContainer}>
+        <div className={style.imageContainer}>
+          <img className={style.image} src={imageDisplay}/>
+      </div>
         <div className={style.recipeTitle}>{selectedRecipe.recipeName}</div>
         <div className={style.heading}>Ingredients:</div>
         <div className={style.text}>{listIngredients}</div>
