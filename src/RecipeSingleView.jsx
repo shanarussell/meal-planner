@@ -54,6 +54,7 @@ const RecipeSingleView = ({ selectedRecipe }) => {
   ));
 
   const instructionsArr = selectedRecipe.recipeInstructions;
+  
   const listInstructions = instructionsArr.map((item) => (
     <li key={item}>{item}</li>
   ));

@@ -10,8 +10,13 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
-import {storage} from "./firebase"
-import {getDownloadURL, ref, uploadBytes, uploadBytesResumable} from "firebase/storage";
+import { storage } from "./firebase";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
@@ -24,9 +29,7 @@ const style = {
   container: `flex-col bg-slate-100 w-full rounded-md shadow-xl p-4`,
   heading: `text-xl font-bold text-left text-gray-800 p-2`,
   inputRecipeName: `border p-2 w-1/2 text-xl mb-4`,
-  inputIngredient: `border p-2 w-full text-xl mb-4`,
-  inputInstructions: `border p-2 w-full text-xl mb-4`,
-  inputNotes: `border p-2 w-full text-xl mb-4`,
+  inputTextAreas: `border p-2 w-full text-xl mb-4`,
   submitButton: `bg-[#5D9C59] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
   checkboxesContainer: `flex flex-col`,
   checkboxes: `text-lg font-bold text-left text-gray-800`,
@@ -44,32 +47,40 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
   //launches from MainRecipesView
   //setNewRecipe prop is a boolean that sets whether the modal is open or not
 
-  const [inputRecipeName, setRecipeNameInput] = useState("");
-  const [inputIngredient, setIngredientInput] = useState("");
-  const [inputInstructions, setInstructionsInput] = useState("");
-  const [inputNotes, setNotesInput] = useState("");
+  const [fullRecipe, setFullRecipe] = useState({
+    recipeName: "",
+    recipeIngredients: [],
+    recipeInstructions: [],
+    recipeNotes: "",
+    isDinner: false,
+    isBreakfast: false,
+    isLunch: false,
+    imagePath: "",
+  });
+
   const [imageUpload, setImageUpload] = useState(null);
-  let isDinner = false;
-  let isBreakfast = false;
-  let isLunch = false;
-  let imagePath = "";
+  let recipeTitlePlaceholder = "Add Recipe Title";
+  let recipeIngredientPlaceholder = "Add ingredients separated by commas";
+  let recipeInstructionsPlaceholder =
+    "Add instructions with each step separated by a comma";
+  let recipeNotesPlaceholder = "Add Notes with each step separated by a comma";
 
   // Create Recipe (add)
   const createRecipe = async (e) => {
     e.preventDefault(e);
 
-    const ingredientArray = inputIngredient.split(", ");
-    const instructionsArray = inputInstructions.split(", ");
+    // const ingredientArray = inputIngredient.split(", ");
+    // const instructionsArray = inputInstructions.split(", ");
 
     await addDoc(collection(db, "recipes"), {
-      recipeName: inputRecipeName,
-      recipeIngredients: ingredientArray,
-      recipeInstructions: instructionsArray,
-      recipeNotes: inputNotes,
-      isDinner: isDinner,
-      isBreakfast: isBreakfast,
-      isLunch: isLunch,
-      imagePath: imagePath,
+      recipeName: fullRecipe.recipeName,
+      recipeIngredients: fullRecipe.recipeIngredients,
+      recipeInstructions: fullRecipe.recipeInstructions,
+      recipeNotes: fullRecipe.recipeNotes,
+      isDinner: fullRecipe.isDinner,
+      isBreakfast: fullRecipe.isBreakfast,
+      isLunch: fullRecipe.isLunch,
+      imagePath: fullRecipe.imagePath,
     });
     setNewRecipeModal(false);
   };
@@ -81,16 +92,21 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
   const uploadImage = (event) => {
     event.preventDefault(event);
     if (imageUpload == null) return;
-    if (inputRecipeName === ""){
-      alert("Please enter a recipe name before uploading a photo")
+    if (fullRecipe.recipeName === "") {
+      alert("Please enter a recipe name before uploading a photo");
       return;
     }
 
-    const imageRef = ref(storage, `${inputRecipeName}/${imageUpload.name}`);
+    const imageRef = ref(
+      storage,
+      `${fullRecipe.recipeName}/${imageUpload.name}`
+    );
     uploadBytes(imageRef, imageUpload).then(() => {
-      alert("Image Uploaded")
-      getDownloadURL(uploadBytesResumable(imageRef, imageUpload).snapshot.ref).then((url) => imagePath = url)
-    })
+      alert("Image Uploaded");
+      getDownloadURL(
+        uploadBytesResumable(imageRef, imageUpload).snapshot.ref
+      ).then((url) => setFullRecipe((prevRecipe) => ({...prevRecipe, imagePath: url})));
+    });
   };
 
   return (
@@ -115,40 +131,55 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
                 <form>
                   <h3 className={style.heading}>Recipe Name:</h3>
                   <input
-                    value={inputRecipeName}
-                    onChange={(e) => setRecipeNameInput(e.target.value)}
+                    value={fullRecipe.recipeName}
+                    onChange={(e) =>
+                      setFullRecipe((prevRecipe) => ({...prevRecipe, recipeName: e.target.value}))
+                      
+                    }
                     className={style.inputRecipeName}
                     type="text"
-                    placeholder="Add Recipe Title"
+                    placeholder={recipeTitlePlaceholder}
                   />
                   <h3 className={style.heading}>Ingredients:</h3>
                   <textarea
-                    value={inputIngredient}
-                    onChange={(e) => setIngredientInput(e.target.value)}
-                    className={style.inputIngredient}
+                    value={fullRecipe.recipeIngredients}
+                    onChange={(e) =>
+                      setFullRecipe(
+                        (prevRecipe) => ({...prevRecipe, recipeIngredients: e.target.value.split(","),})
+                      )
+                    }
+                    className={style.inputTextAreas}
                     rows={"5"}
-                    placeholder="Add ingredients separated by commas"
+                    placeholder={recipeIngredientPlaceholder}
                   />
                   <h3 className={style.heading}>Cooking Instructions:</h3>
                   <textarea
-                    value={inputInstructions}
-                    onChange={(e) => setInstructionsInput(e.target.value)}
-                    className={style.inputInstructions}
+                    value={fullRecipe.recipeInstructions}
+                    onChange={(e) =>
+                      setFullRecipe(
+                        (prevRecipe) => ({...prevRecipe, recipeInstructions: e.target.value.split(","),})
+                      )
+                    }
+                    className={style.inputTextAreas}
                     rows={"7"}
-                    placeholder="Add instructions with each step separated by a comma"
+                    placeholder={recipeInstructionsPlaceholder}
                   />
                   <h3 className={style.heading}>Notes, links, etc:</h3>
                   <textarea
-                    value={inputNotes}
-                    onChange={(e) => setNotesInput(e.target.value)}
-                    className={style.inputNotes}
+                    value={fullRecipe.recipeNotes}
+                    onChange={(e) =>
+                      setFullRecipe((prevRecipe) => ({...prevRecipe, recipeNotes: e.target.value}))
+                    }
+                    className={style.inputTextAreas}
                     rows={"7"}
-                    placeholder="Add Notes with each step separated by a comma"
+                    placeholder={recipeNotesPlaceholder}
                   />
                   <div className={style.imageUploadContainer}>
                     <input
                       className={style.imageFileUpload}
-                      onChange={(event) => {setImageUpload(event.target.files[0])}}
+                      onChange={(event) => {
+                        setImageUpload(event.target.files[0]);
+                      }}
                       type="file"
                     ></input>
                     <button
@@ -162,8 +193,10 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
                     <label className={style.checkboxes}>
                       <input
                         type="checkbox"
-                        value={isDinner}
-                        onChange={() => (isDinner = true)}
+                        value={fullRecipe.isDinner}
+                        onChange={() =>
+                          setFullRecipe((prevRecipe) => ({...prevRecipe, isDinner: !prevRecipe.isDinner}))
+                        }
                         className={style.checkboxes}
                       />{" "}
                       Add to this weeks dinners?
@@ -171,8 +204,10 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
                     <label className={style.checkboxes}>
                       <input
                         type="checkbox"
-                        value={isBreakfast}
-                        onChange={() => (isBreakfast = true)}
+                        value={fullRecipe.isBreakfast}
+                        onChange={() =>
+                          setFullRecipe((prevRecipe) => ({...prevRecipe, isBreakfast: !prevRecipe.isBreakfast})
+                          )}
                         className={style.checkboxes}
                       />{" "}
                       Add to this weeks breakfasts?
@@ -180,8 +215,10 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
                     <label className={style.checkboxes}>
                       <input
                         type="checkbox"
-                        value={isLunch}
-                        onChange={() => (isLunch = true)}
+                        value={fullRecipe.isLunch}
+                        onChange={() =>
+                          setFullRecipe((prevRecipe) => ({...prevRecipe, isLunch: !prevRecipe.isLunch}))
+                        }
                         className={style.checkboxes}
                       />{" "}
                       Add to this weeks lunches?
