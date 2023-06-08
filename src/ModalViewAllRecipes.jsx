@@ -96,7 +96,7 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
                   {listAll ? (
                     listAllRecipes
                   ) : (
-                    <RecipeSingleView selectedRecipe={selectedRecipe} />
+                    <RecipeSingleView selectedRecipe={selectedRecipe} setViewRecipesModal={setViewRecipesModal} />
                   )}
                 </div>
               </div>

@@ -43,22 +43,53 @@ const style = {
   imageUploadButton: `bg-[#5D9C59] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
 };
 
-const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
+const ModalAddEditRecipe = ({
+  setNewRecipeModal,
+  selectedRecipe,
+  editMode,
+  setViewRecipesModal,
+}) => {
   //launches from MainRecipesView
   //setNewRecipe prop is a boolean that sets whether the modal is open or not
 
-  const [fullRecipe, setFullRecipe] = useState({
-    recipeName: "",
-    recipeIngredients: [],
-    recipeInstructions: [],
-    recipeNotes: "",
-    isDinner: false,
-    isBreakfast: false,
-    isLunch: false,
-    imagePath: "",
+  //if we're in edit mode, set fullRecipe to selectedRecipe. Otherwise, set it as blank values
+  const [fullRecipe, setFullRecipe] = useState(() => {
+    if (editMode) {
+      return {
+        recipeName: selectedRecipe.recipeName,
+        recipeIngredients: selectedRecipe.recipeIngredients,
+        recipeInstructions: selectedRecipe.recipeInstructions,
+        recipeNotes: selectedRecipe.recipeNotes,
+        isDinner: selectedRecipe.isDinner,
+        isBreakfast: selectedRecipe.isBreakfast,
+        isLunch: selectedRecipe.isLunch,
+        imagePath: selectedRecipe.imagePath,
+      };
+    } else {
+      return {
+        recipeName: "",
+        recipeIngredients: [],
+        recipeInstructions: [],
+        recipeNotes: "",
+        isDinner: false,
+        isBreakfast: false,
+        isLunch: false,
+        imagePath: "",
+      };
+    }
   });
 
   const [imageUpload, setImageUpload] = useState(null);
+  const [isDinnerChecked, setIsDinnerChecked] = useState(
+    editMode && selectedRecipe.isDinner
+  );
+  const [isBreakfastChecked, setIsBreakfastChecked] = useState(
+    editMode && selectedRecipe.isBreakfast
+  );
+  const [isLunchChecked, setIsLunchChecked] = useState(
+    editMode && selectedRecipe.isLunch
+  );
+
   let recipeTitlePlaceholder = "Add Recipe Title";
   let recipeIngredientPlaceholder = "Add ingredients separated by commas";
   let recipeInstructionsPlaceholder =
@@ -68,9 +99,6 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
   // Create Recipe (add)
   const createRecipe = async (e) => {
     e.preventDefault(e);
-
-    // const ingredientArray = inputIngredient.split(", ");
-    // const instructionsArray = inputInstructions.split(", ");
 
     await addDoc(collection(db, "recipes"), {
       recipeName: fullRecipe.recipeName,
@@ -105,9 +133,32 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
       alert("Image Uploaded");
       getDownloadURL(
         uploadBytesResumable(imageRef, imageUpload).snapshot.ref
-      ).then((url) => setFullRecipe((prevRecipe) => ({...prevRecipe, imagePath: url})));
+      ).then((url) =>
+        setFullRecipe((prevRecipe) => ({ ...prevRecipe, imagePath: url }))
+      );
     });
   };
+
+  //edit recipe in Database
+  const editRecipe = async (event) => {
+    event.preventDefault(event);
+    await updateDoc(doc(db, "recipes", selectedRecipe.id), {
+      recipeName: fullRecipe.recipeName,
+      recipeIngredients: fullRecipe.recipeIngredients,
+      recipeInstructions: fullRecipe.recipeInstructions,
+      recipeNotes: fullRecipe.recipeNotes,
+      isDinner: fullRecipe.isDinner,
+      isBreakfast: fullRecipe.isBreakfast,
+      isLunch: fullRecipe.isLunch,
+      imagePath: fullRecipe.imagePath,
+    });
+    setViewRecipesModal(false);
+  };
+
+  const closeModal = () => {
+    setViewRecipesModal(false)
+    setNewRecipeModal(false)
+  }
 
   return (
     <>
@@ -117,15 +168,14 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
           <div className={style.modalOuterContainer}>
             {/*header*/}
             <div className={style.modalHeader}>
-              <h3 className={style.modalTitle}>Add new recipe</h3>
+              <h3 className={style.modalTitle}>{editMode ? "Edit Recipe" : "Add new recipe"}</h3>
               <button
                 className={style.modalXButton}
-                onClick={() => setNewRecipeModal(false)}
-              >
-                <span className={style.modalCloseButton}>×</span>
-              </button>
+                onClick={closeModal}
+              >×</button>
             </div>
             {/*body*/}
+
             <div className={style.modalTextContainer}>
               <div className={style.container}>
                 <form>
@@ -133,46 +183,69 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
                   <input
                     value={fullRecipe.recipeName}
                     onChange={(e) =>
-                      setFullRecipe((prevRecipe) => ({...prevRecipe, recipeName: e.target.value}))
-                      
+                      setFullRecipe((prevRecipe) => ({
+                        ...prevRecipe,
+                        recipeName: e.target.value,
+                      }))
                     }
                     className={style.inputRecipeName}
                     type="text"
-                    placeholder={recipeTitlePlaceholder}
+                    placeholder={
+                      editMode
+                        ? selectedRecipe.recipeName
+                        : recipeTitlePlaceholder
+                    }
                   />
                   <h3 className={style.heading}>Ingredients:</h3>
                   <textarea
                     value={fullRecipe.recipeIngredients}
                     onChange={(e) =>
-                      setFullRecipe(
-                        (prevRecipe) => ({...prevRecipe, recipeIngredients: e.target.value.split(","),})
-                      )
+                      setFullRecipe((prevRecipe) => ({
+                        ...prevRecipe,
+                        recipeIngredients: e.target.value.split(","),
+                      }))
                     }
                     className={style.inputTextAreas}
                     rows={"5"}
-                    placeholder={recipeIngredientPlaceholder}
+                    placeholder={
+                      editMode
+                        ? selectedRecipe.recipeIngredients
+                        : recipeIngredientPlaceholder
+                    }
                   />
                   <h3 className={style.heading}>Cooking Instructions:</h3>
                   <textarea
                     value={fullRecipe.recipeInstructions}
                     onChange={(e) =>
-                      setFullRecipe(
-                        (prevRecipe) => ({...prevRecipe, recipeInstructions: e.target.value.split(","),})
-                      )
+                      setFullRecipe((prevRecipe) => ({
+                        ...prevRecipe,
+                        recipeInstructions: e.target.value.split(","),
+                      }))
                     }
                     className={style.inputTextAreas}
                     rows={"7"}
-                    placeholder={recipeInstructionsPlaceholder}
+                    placeholder={
+                      editMode
+                        ? selectedRecipe.recipeInstructions
+                        : recipeInstructionsPlaceholder
+                    }
                   />
                   <h3 className={style.heading}>Notes, links, etc:</h3>
                   <textarea
                     value={fullRecipe.recipeNotes}
                     onChange={(e) =>
-                      setFullRecipe((prevRecipe) => ({...prevRecipe, recipeNotes: e.target.value}))
+                      setFullRecipe((prevRecipe) => ({
+                        ...prevRecipe,
+                        recipeNotes: e.target.value,
+                      }))
                     }
                     className={style.inputTextAreas}
                     rows={"7"}
-                    placeholder={recipeNotesPlaceholder}
+                    placeholder={
+                      editMode
+                        ? selectedRecipe.recipeNotes
+                        : recipeNotesPlaceholder
+                    }
                   />
                   <div className={style.imageUploadContainer}>
                     <input
@@ -193,10 +266,14 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
                     <label className={style.checkboxes}>
                       <input
                         type="checkbox"
-                        value={fullRecipe.isDinner}
-                        onChange={() =>
-                          setFullRecipe((prevRecipe) => ({...prevRecipe, isDinner: !prevRecipe.isDinner}))
-                        }
+                        checked={isDinnerChecked}
+                        onChange={() => {
+                          setIsDinnerChecked((prevState) => !prevState);
+                          setFullRecipe((prevRecipe) => ({
+                            ...prevRecipe,
+                            isDinner: !prevRecipe.isDinner,
+                          }));
+                        }}
                         className={style.checkboxes}
                       />{" "}
                       Add to this weeks dinners?
@@ -204,10 +281,14 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
                     <label className={style.checkboxes}>
                       <input
                         type="checkbox"
-                        value={fullRecipe.isBreakfast}
-                        onChange={() =>
-                          setFullRecipe((prevRecipe) => ({...prevRecipe, isBreakfast: !prevRecipe.isBreakfast})
-                          )}
+                        checked={isBreakfastChecked}
+                        onChange={() => {
+                          setIsBreakfastChecked((prevState) => !prevState);
+                          setFullRecipe((prevRecipe) => ({
+                            ...prevRecipe,
+                            isBreakfast: !prevRecipe.isBreakfast,
+                          }));
+                        }}
                         className={style.checkboxes}
                       />{" "}
                       Add to this weeks breakfasts?
@@ -215,17 +296,24 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
                     <label className={style.checkboxes}>
                       <input
                         type="checkbox"
-                        value={fullRecipe.isLunch}
-                        onChange={() =>
-                          setFullRecipe((prevRecipe) => ({...prevRecipe, isLunch: !prevRecipe.isLunch}))
-                        }
+                        checked={isLunchChecked}
+                        onChange={() => {
+                          setIsLunchChecked((prevState) => !prevState);
+                          setFullRecipe((prevRecipe) => ({
+                            ...prevRecipe,
+                            isLunch: !prevRecipe.isLunch,
+                          }));
+                        }}
                         className={style.checkboxes}
                       />{" "}
                       Add to this weeks lunches?
                     </label>
                   </div>
                   <br />
-                  <button className={style.submitButton} onClick={createRecipe}>
+                  <button
+                    className={style.submitButton}
+                    onClick={editMode ? editRecipe : createRecipe}
+                  >
                     Submit
                   </button>
                 </form>
@@ -239,8 +327,11 @@ const ModalAddNewRecipe = ({ setNewRecipeModal }) => {
   );
 };
 
-ModalAddNewRecipe.propTypes = {
+ModalAddEditRecipe.propTypes = {
   setNewRecipeModal: PropTypes.func,
+  setViewRecipesModal: PropTypes.func,
+  selectedRecipe: PropTypes.object,
+  editMode: PropTypes.bool,
 };
 
-export default ModalAddNewRecipe;
+export default ModalAddEditRecipe;

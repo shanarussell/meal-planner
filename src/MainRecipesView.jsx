@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ModalViewAllRecipes from "./ModalViewAllRecipes";
-import ModalAddNewRecipe from "./ModalAddNewRecipe";
+import ModalAddEditRecipe from "./ModalAddEditRecipe";
 
 const style = {
   container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8`,
@@ -37,15 +37,13 @@ const MainRecipesView = () => {
       </div>
 
       {viewRecipesModal ? (
-        <ModalViewAllRecipes
-         
-          setViewRecipesModal={setViewRecipesModal}
-        />
+        <ModalViewAllRecipes setViewRecipesModal={setViewRecipesModal} />
       ) : null}
 
       {newRecipeModal ? (
-        <ModalAddNewRecipe
+        <ModalAddEditRecipe
           setNewRecipeModal={setNewRecipeModal}
+          setViewRecipesModal={setViewRecipesModal}
         />
       ) : null}
     </div>

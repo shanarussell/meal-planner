@@ -16,6 +16,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import React from "react";
 import { ref, listAll, getDownloadURL, getStorage } from "firebase/storage";
 import { storage } from "./firebase";
+import ModalAddEditRecipe from "./ModalAddEditRecipe";
 
 const style = {
   recipeAndButtonsContainer: `flex flex-col`,
@@ -36,8 +37,7 @@ const style = {
   editTitleButton: `bg-[#5D9C59] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
 };
 
-const RecipeSingleView = ({ selectedRecipe }) => {
-  const [imageDisplay, setImageDisplay] = useState([]);
+const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   const [editMode, setEditMode] = useState(false);
 
   const ingredientsArr = selectedRecipe.recipeIngredients;
@@ -54,7 +54,7 @@ const RecipeSingleView = ({ selectedRecipe }) => {
   ));
 
   const instructionsArr = selectedRecipe.recipeInstructions;
-  
+
   const listInstructions = instructionsArr.map((item) => (
     <li key={item}>{item}</li>
   ));
@@ -87,9 +87,7 @@ const RecipeSingleView = ({ selectedRecipe }) => {
     setEditMode(false);
   };
 
-  const deleteRecipe = async (selectedRecipe) => {
-    
-  };
+  const deleteRecipe = async (selectedRecipe) => {};
 
   //add single ingredient to the grocery list
   const addSingleToGroceryList = async (e, item) => {
@@ -109,19 +107,6 @@ const RecipeSingleView = ({ selectedRecipe }) => {
       groceryItem: item,
     });
   };
-
-  //get image
-  const imageListRef = ref(storage, `${selectedRecipe.recipeName}/`);
-  useEffect(() => {
-    listAll(imageListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          setImageDisplay(url);
-        });
-      });
-    });
-    console.log(imageDisplay);
-  }, []);
 
   return (
     <div className={style.recipeAndButtonsContainer}>
@@ -164,23 +149,29 @@ const RecipeSingleView = ({ selectedRecipe }) => {
           Delete Recipe
         </button>
       </div>
-      <div className={style.recipeContainer}>
-        <div className={style.editContainer}>
-         
+      {editMode ? (
+        <ModalAddEditRecipe
+          selectedRecipe={selectedRecipe}
+          editMode={editMode}
+          setViewRecipesModal={setViewRecipesModal}
+        />
+      ) : (
+        <div className={style.recipeContainer}>
+          <div className={style.editContainer}>
             <div className={style.recipeTitle}>{selectedRecipe.recipeName}</div>
-          
-        </div>
-        <div className={style.imageContainer}>
-          <img className={style.image} src={imageDisplay} />
-        </div>
+          </div>
+          <div className={style.imageContainer}>
+            <img className={style.image} src={selectedRecipe.imagePath} />
+          </div>
 
-        <div className={style.heading}>Ingredients:</div>
-        <div className={style.text}>{listIngredients}</div>
-        <div className={style.heading}>Instructions:</div>
-        <div className={style.text}>{listInstructions}</div>
-        <div className={style.heading}>Notes:</div>
-        <div className={style.text}>{selectedRecipe.recipeNotes}</div>
-      </div>
+          <div className={style.heading}>Ingredients:</div>
+          <div className={style.text}>{listIngredients}</div>
+          <div className={style.heading}>Instructions:</div>
+          <div className={style.text}>{listInstructions}</div>
+          <div className={style.heading}>Notes:</div>
+          <div className={style.text}>{selectedRecipe.recipeNotes}</div>
+        </div>
+      )}
     </div>
   );
 };
