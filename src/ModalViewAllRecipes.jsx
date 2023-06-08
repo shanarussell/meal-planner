@@ -75,7 +75,7 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
 
   return (
     <>
-      <div className={style.modalPosition}>
+    {listAll ? (<><div className={style.modalPosition}>
         <div className={style.modalSize}>
           {/*content*/}
           <div className={style.modalOuterContainer}>
@@ -93,18 +93,18 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
             <div className={style.modalTextContainer}>
               <div className={style.greyContainer}>
                 <div className={style.recipeContainer}>
-                  {listAll ? (
-                    listAllRecipes
-                  ) : (
-                    <RecipeSingleView selectedRecipe={selectedRecipe} setViewRecipesModal={setViewRecipesModal} />
-                  )}
+                  {listAllRecipes}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div></>) : <RecipeSingleView
+      selectedRecipe={selectedRecipe}
+      setViewRecipesModal={setViewRecipesModal}
+    /> }
+      
     </>
   );
 };
@@ -114,3 +114,14 @@ ModalViewAllRecipes.propTypes = {
 };
 
 export default ModalViewAllRecipes;
+
+// {
+//   listAll ? (
+//     listAllRecipes
+//   ) : (
+//     <RecipeSingleView
+//       selectedRecipe={selectedRecipe}
+//       setViewRecipesModal={setViewRecipesModal}
+//     />
+//   );
+// }

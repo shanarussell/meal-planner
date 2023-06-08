@@ -41,10 +41,7 @@ const MainRecipesView = () => {
       ) : null}
 
       {newRecipeModal ? (
-        <ModalAddEditRecipe
-          setNewRecipeModal={setNewRecipeModal}
-          setViewRecipesModal={setViewRecipesModal}
-        />
+        <ModalAddEditRecipe setNewRecipeModal={setNewRecipeModal} setViewRecipesModal={setViewRecipesModal} />
       ) : null}
     </div>
   );

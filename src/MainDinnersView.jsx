@@ -10,6 +10,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { FaRegTrashAlt } from "react-icons/fa";
+import RecipeSingleView from "./RecipeSingleView";
 
 const style = {
   container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8`,
@@ -29,6 +30,10 @@ const MainDinnersView = () => {
   //can also use the trash can icon to toggle isDinner and delete it from this view
 
   const [selectedDinners, setSelectedDinners] = useState([]);
+  const [viewSingleRecipe, setViewSingleRecipe] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState();
+  const [viewRecipesModal, setViewRecipesModal] = useState(false);
+
 
   // Read all recipes from DB and keep those where isDinner=true
   useEffect(() => {
@@ -52,6 +57,15 @@ const MainDinnersView = () => {
     return () => unsubscribe();
   }, []);
 
+  //show a single recipe when clicked
+  function handleRecipeClick (item){
+    setSelectedRecipe(item)
+   setViewSingleRecipe(true)
+   setViewRecipesModal(true)
+  }
+
+  //<RecipeSingleView selectedRecipe={item} setViewRecipesModal={true}/>
+
   //handle trash click (remove from list by changing isDinner)
 
   const handleTrashClick = async (item) => {
@@ -61,24 +75,34 @@ const MainDinnersView = () => {
   };
 
   return (
-    <div className={style.container}>
-      <h3 className={style.heading}>Weekly Dinners</h3>
-      <div className={style.dinnerGrid}>
-        {selectedDinners.map((item) => (
-          <div className={style.singleRecipeContainer} key={item.id}>
-            <div className={style.singleRecipeImageContainer}>
-              <img className={style.thumbnailImage} src={item.imagePath} />
-            </div>
-            <div className={style.recipeTitle}> {item.recipeName}</div>
-            <div className={style.trashCan}>
-              <button onClick={() => handleTrashClick(item)}>
-                <FaRegTrashAlt />
-              </button>
-            </div>
+    <>
+      {viewRecipesModal ? (
+        <RecipeSingleView selectedRecipe={selectedRecipe} setViewRecipesModal={setViewRecipesModal} />
+      ) : (
+        <div className={style.container}>
+          <h3 className={style.heading}>Weekly Dinners</h3>
+          <div className={style.dinnerGrid}>
+            {selectedDinners.map((item) => (
+              <div
+                className={style.singleRecipeContainer}
+                key={item.id}
+                onClick={() => handleRecipeClick(item)}
+              >
+                <div className={style.singleRecipeImageContainer}>
+                  <img className={style.thumbnailImage} src={item.imagePath} />
+                </div>
+                <div className={style.recipeTitle}> {item.recipeName}</div>
+                <div className={style.trashCan}>
+                  <button onClick={() => handleTrashClick(item)}>
+                    <FaRegTrashAlt />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };
 

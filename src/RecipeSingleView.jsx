@@ -19,6 +19,14 @@ import { storage } from "./firebase";
 import ModalAddEditRecipe from "./ModalAddEditRecipe";
 
 const style = {
+  modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
+  modalSize: `relative w-auto mx-20 w-full max-h-full overflow-auto`,
+  modalOuterContainer: `rounded-lg shadow-lg flex flex-col w-full bg-white outline-none`,
+  modalHeader: `flex items-start justify-between p-5 border-b rounded-t`,
+  modalTitle: `text-3xl font-semibold`,
+  modalXButton: `p-1 ml-auto bg-transparent border-0 text-[#DF2E38] float-right text-3xl leading-none font-semibold outline-none`,
+  modalTextContainer: `relative p-6`,
+  greyContainer: `flex-col bg-slate-100 w-full rounded-md shadow-xl p-4`,
   recipeAndButtonsContainer: `flex flex-col`,
   buttonsContainer: `flex flex-row basis-full flex-wrap justify-stretch`,
   recipeContainer: `flex flex-col basis-full flex-wrap justify-stretch`,
@@ -87,7 +95,11 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
     setEditMode(false);
   };
 
-  const deleteRecipe = async (selectedRecipe) => {};
+ 
+  const deleteRecipe = async (selectedRecipe) => {
+    await deleteDoc(doc(db, "recipes", selectedRecipe.id));
+    setViewRecipesModal(false);
+  };
 
   //add single ingredient to the grocery list
   const addSingleToGroceryList = async (e, item) => {
@@ -109,75 +121,106 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   };
 
   return (
-    <div className={style.recipeAndButtonsContainer}>
-      <div className={style.buttonsContainer}>
-        <button
-          className={style.button}
-          onClick={() => addToDinners(selectedRecipe)}
-        >
-          + Dinners
-        </button>
-        <button
-          className={style.button}
-          onClick={() => addToLunches(selectedRecipe)}
-        >
-          + Lunches
-        </button>
-        <button
-          className={style.button}
-          onClick={() => addToBreakfasts(selectedRecipe)}
-        >
-          + Breakfasts
-        </button>
-        {editMode ? (
-          <button
-            className={style.editButton}
-            onClick={() => saveEdits(selectedRecipe)}
-          >
-            Save Edits
-          </button>
-        ) : (
-          <button className={style.editButton} onClick={() => editRecipe()}>
-            Edit Recipe
-          </button>
-        )}
-
-        <button
-          className={style.deleteButton}
-          onClick={() => deleteRecipe(selectedRecipe)}
-        >
-          Delete Recipe
-        </button>
-      </div>
-      {editMode ? (
-        <ModalAddEditRecipe
-          selectedRecipe={selectedRecipe}
-          editMode={editMode}
-          setViewRecipesModal={setViewRecipesModal}
-        />
-      ) : (
-        <div className={style.recipeContainer}>
-          <div className={style.editContainer}>
-            <div className={style.recipeTitle}>{selectedRecipe.recipeName}</div>
+    <div className={style.modalPosition}>
+      <div className={style.modalSize}>
+        {/*content*/}
+        <div className={style.modalOuterContainer}>
+          {/*header*/}
+          <div className={style.modalHeader}>
+            <h3 className={style.modalTitle}>Recipes</h3>
+            <button
+              className={style.modalXButton}
+              onClick={() => setViewRecipesModal(false)}
+            >
+              <span className={style.modalCloseButton}>×</span>
+            </button>
           </div>
-          <div className={style.imageContainer}>
-            <img className={style.image} src={selectedRecipe.imagePath} />
-          </div>
+          <>
+          <div className={style.modalTextContainer}>
+              <div className={style.greyContainer}>
+            <div className={style.recipeAndButtonsContainer}>
+              <div className={style.buttonsContainer}>
+                <button
+                  className={style.button}
+                  onClick={() => addToDinners(selectedRecipe)}
+                >
+                  + Dinners
+                </button>
+                <button
+                  className={style.button}
+                  onClick={() => addToLunches(selectedRecipe)}
+                >
+                  + Lunches
+                </button>
+                <button
+                  className={style.button}
+                  onClick={() => addToBreakfasts(selectedRecipe)}
+                >
+                  + Breakfasts
+                </button>
+                {editMode ? (
+                  <button
+                    className={style.editButton}
+                    onClick={() => saveEdits(selectedRecipe)}
+                  >
+                    Save Edits
+                  </button>
+                ) : (
+                  <button
+                    className={style.editButton}
+                    onClick={() => editRecipe()}
+                  >
+                    Edit Recipe
+                  </button>
+                )}
 
-          <div className={style.heading}>Ingredients:</div>
-          <div className={style.text}>{listIngredients}</div>
-          <div className={style.heading}>Instructions:</div>
-          <div className={style.text}>{listInstructions}</div>
-          <div className={style.heading}>Notes:</div>
-          <div className={style.text}>{selectedRecipe.recipeNotes}</div>
+                <button
+                  className={style.deleteButton}
+                  onClick={() => deleteRecipe(selectedRecipe)}
+                >
+                  Delete Recipe
+                </button>
+              </div>
+              {editMode ? (
+                <ModalAddEditRecipe
+                  selectedRecipe={selectedRecipe}
+                  editMode={editMode}
+                  setViewRecipesModal={setViewRecipesModal}
+                />
+              ) : (
+                <div className={style.recipeContainer}>
+                  <div className={style.editContainer}>
+                    <div className={style.recipeTitle}>
+                      {selectedRecipe.recipeName}
+                    </div>
+                  </div>
+                  <div className={style.imageContainer}>
+                    <img
+                      className={style.image}
+                      src={selectedRecipe.imagePath}
+                    />
+                  </div>
+
+                  <div className={style.heading}>Ingredients:</div>
+                  <div className={style.text}>{listIngredients}</div>
+                  <div className={style.heading}>Instructions:</div>
+                  <div className={style.text}>{listInstructions}</div>
+                  <div className={style.heading}>Notes:</div>
+                  <div className={style.text}>{selectedRecipe.recipeNotes}</div>
+                </div>
+              )}
+            </div>
+            </div></div>
+          </>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
 RecipeSingleView.propTypes = {
   selectedRecipe: PropTypes.object,
+  setViewRecipesModal: PropTypes.func,
 };
 
 export default RecipeSingleView;
