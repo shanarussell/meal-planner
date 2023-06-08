@@ -68,7 +68,8 @@ const MainDinnersView = () => {
 
   //handle trash click (remove from list by changing isDinner)
 
-  const handleTrashClick = async (item) => {
+  const handleTrashClick = async (e, item) => {
+    e.stopPropagation();
     await updateDoc(doc(db, "recipes", item.id), {
       isDinner: !item.isDinner,
     });
@@ -93,7 +94,7 @@ const MainDinnersView = () => {
                 </div>
                 <div className={style.recipeTitle}> {item.recipeName}</div>
                 <div className={style.trashCan}>
-                  <button onClick={() => handleTrashClick(item)}>
+                  <button onClick={(e) => handleTrashClick(e, item)}>
                     <FaRegTrashAlt />
                   </button>
                 </div>

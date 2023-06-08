@@ -156,8 +156,8 @@ const ModalAddEditRecipe = ({
   };
 
   const closeModal = () => {
-    setViewRecipesModal(false)
-    setNewRecipeModal(false)
+    
+    {editMode ? setViewRecipesModal(false) : setNewRecipeModal(false)}
   }
 
   return (
