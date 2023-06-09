@@ -82,6 +82,7 @@ const ModalAddEditRecipe = ({
   });
 
   const [imageUpload, setImageUpload] = useState(null);
+  const [imageUploadedState, setImageUploadedState] = useState(false);
   const [isDinnerChecked, setIsDinnerChecked] = useState(
     editMode ? selectedRecipe.isDinner : false
   );
@@ -132,7 +133,7 @@ const ModalAddEditRecipe = ({
       `${fullRecipe.recipeName}/${imageUpload.name}`
     );
     uploadBytes(imageRef, imageUpload).then(() => {
-      alert("Image Uploaded");
+      setImageUploadedState(true);
       getDownloadURL(
         uploadBytesResumable(imageRef, imageUpload).snapshot.ref
       ).then((url) =>
@@ -268,19 +269,29 @@ const ModalAddEditRecipe = ({
                     }
                   />
                   <div className={style.imageUploadContainer}>
-                    <input
-                      className={style.imageFileUpload}
-                      onChange={(event) => {
-                        setImageUpload(event.target.files[0]);
-                      }}
-                      type="file"
-                    ></input>
-                    <button
-                      className={style.imageUploadButton}
-                      onClick={uploadImage}
-                    >
-                      Upload Image
-                    </button>
+                    <div className={style.imageUploadContainer}>
+                      {imageUpload && (
+                        <div>
+                          <p>Selected image: {imageUpload.name}</p>
+                          <button
+                            className={style.imageUploadButton}
+                            onClick={uploadImage}
+                          >
+                            Upload Image
+                          </button>
+                        </div>
+                      )}
+                      {!imageUpload && (
+                        <input
+                          className={style.imageFileUpload}
+                          onChange={(event) => {
+                            setImageUpload(event.target.files[0]);
+                          }}
+                          type="file"
+                        />
+                      )}
+                      {imageUploadedState && <p>Image Uploaded Successfully</p>}
+                    </div>
                   </div>
                   <div className={style.checkboxesContainer}>
                     <label className={style.checkboxes}>

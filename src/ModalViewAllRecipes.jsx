@@ -120,14 +120,3 @@ ModalViewAllRecipes.propTypes = {
 };
 
 export default ModalViewAllRecipes;
-
-// {
-//   listAll ? (
-//     listAllRecipes
-//   ) : (
-//     <RecipeSingleView
-//       selectedRecipe={selectedRecipe}
-//       setViewRecipesModal={setViewRecipesModal}
-//     />
-//   );
-// }
