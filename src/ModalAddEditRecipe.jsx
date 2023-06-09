@@ -225,12 +225,19 @@ const ModalAddEditRecipe = ({
                   <h3 className={style.heading}>Cooking Instructions:</h3>
                   <textarea
                     value={fullRecipe.recipeInstructions}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const cleanedValue = e.target.value
+                        .replace(/\u25A2/g, "") // Remove all occurrences of "▢" character
+                        .replace(/•/g, "") // Remove all occurrences of bullet points
+                        .split("\n")
+                        .map((instructions) => instructions)
+                        .filter((instructions) => instructions !== ""); // Remove empty ingredients
+
                       setFullRecipe((prevRecipe) => ({
                         ...prevRecipe,
-                        recipeInstructions: e.target.value.split(","),
-                      }))
-                    }
+                        recipeInstructions: cleanedValue,
+                      }));
+                    }}
                     className={style.inputTextAreas}
                     rows={"7"}
                     placeholder={
