@@ -51,6 +51,8 @@ const ModalAddEditRecipe = ({
 }) => {
   //launches from MainRecipesView
   //setNewRecipe prop is a boolean that sets whether the modal is open or not
+let imagePlaceholderURL =
+  "https://firebasestorage.googleapis.com/v0/b/meal-planner-app-4dcec.appspot.com/o/placeholder%2Fplaceholder.jpg?alt=media&token=0fb58b54-01a3-4709-8f42-663da10691e9";
 
   //if we're in edit mode, set fullRecipe to selectedRecipe. Otherwise, set it as blank values
   const [fullRecipe, setFullRecipe] = useState(() => {
@@ -74,7 +76,7 @@ const ModalAddEditRecipe = ({
         isDinner: false,
         isBreakfast: false,
         isLunch: false,
-        imagePath: "",
+        imagePath: imagePlaceholderURL,
       };
     }
   });
@@ -95,7 +97,7 @@ const ModalAddEditRecipe = ({
   let recipeInstructionsPlaceholder =
     "Add instructions with each step separated by a comma";
   let recipeNotesPlaceholder = "Add Notes with each step separated by a comma";
-
+  
   // Create Recipe (add)
   const createRecipe = async (e) => {
     e.preventDefault(e);
