@@ -43,9 +43,7 @@ const style = {
   image: `h-full w-full object-cover`,
   editContainer: `flex flex-row`,
   editTitleButton: `bg-[#5D9C59] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
-  overlay: `
-    fixed top-0 left-0 z-40 w-full h-full bg-gray-900
-    flex justify-center items-center`,
+  
 };
 
 const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
@@ -137,7 +135,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   };
 
   return (
-    <div className={style.overlay}>
+    <>
       <div className={style.modalPosition}>
         <div className={style.modalSize}>
           {/*content*/}
@@ -236,8 +234,10 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
             </>
           </div>
         </div>
+        
       </div>
-    </div>
+    <div className="opacity-50 fixed inset-0 z-40 bg-black"></div>
+    </>
   );
 };
 

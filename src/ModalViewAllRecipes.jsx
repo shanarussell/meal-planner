@@ -75,36 +75,42 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
 
   return (
     <>
-    {listAll ? (<><div className={style.modalPosition}>
-        <div className={style.modalSize}>
-          {/*content*/}
-          <div className={style.modalOuterContainer}>
-            {/*header*/}
-            <div className={style.modalHeader}>
-              <h3 className={style.modalTitle}>Recipes</h3>
-              <button
-                className={style.modalXButton}
-                onClick={() => setViewRecipesModal(false)}
-              >
-                <span className={style.modalCloseButton}>×</span>
-              </button>
-            </div>
-            {/*body*/}
-            <div className={style.modalTextContainer}>
-              <div className={style.greyContainer}>
-                <div className={style.recipeContainer}>
-                  {listAllRecipes}
+      {listAll ? (
+        <>
+          <div className={style.modalPosition}>
+            <div className={style.modalSize}>
+              {/*content*/}
+              <div className={style.modalOuterContainer}>
+                {/*header*/}
+                <div className={style.modalHeader}>
+                  <h3 className={style.modalTitle}>Recipes</h3>
+                  <button
+                    className={style.modalXButton}
+                    onClick={() => setViewRecipesModal(false)}
+                  >
+                    <span className={style.modalCloseButton}>×</span>
+                  </button>
+                </div>
+                {/*body*/}
+                <div className={style.modalTextContainer}>
+                  <div className={style.greyContainer}>
+                    <div className={style.recipeContainer}>
+                      {listAllRecipes}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div></>) : <RecipeSingleView
-      selectedRecipe={selectedRecipe}
-      setViewRecipesModal={setViewRecipesModal}
-    /> }
-      
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : (
+        <RecipeSingleView
+          selectedRecipe={selectedRecipe}
+          setViewRecipesModal={setViewRecipesModal}
+        />
+      )}
+      <div className="opacity-50 fixed inset-0 z-40 bg-black"></div>
     </>
   );
 };

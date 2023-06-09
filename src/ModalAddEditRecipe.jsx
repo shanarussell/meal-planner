@@ -21,7 +21,7 @@ import {
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
   modalSize: `relative w-auto mx-20 w-full max-h-full overflow-auto`,
-  modalOuterContainer: `rounded-lg shadow-lg flex flex-col w-full bg-white outline-none`,
+  modalOuterContainer: `mt-5 rounded-lg shadow-lg flex flex-col w-full bg-white outline-none`,
   modalHeader: `flex items-start justify-between p-5 border-b rounded-t`,
   modalTitle: `text-3xl font-semibold`,
   modalXButton: `p-1 ml-auto bg-transparent border-0 text-red-500 float-right text-3xl leading-none font-semibold outline-none`,
@@ -342,7 +342,7 @@ const ModalAddEditRecipe = ({
           </div>
         </div>
       </div>
-      <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+      <div className="opacity-50 fixed inset-0 z-40 bg-black"></div>
     </>
   );
 };
