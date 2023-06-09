@@ -1,14 +1,11 @@
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { db } from "./firebase";
 import {
-  query,
   collection,
-  onSnapshot,
   updateDoc,
   doc,
   addDoc,
-  deleteDoc,
 } from "firebase/firestore";
 import { storage } from "./firebase";
 import {
@@ -32,7 +29,7 @@ const style = {
   inputTextAreas: `border p-2 w-full text-xl mb-4`,
   submitButton: `bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
   checkboxesContainer: `flex flex-col`,
-  checkboxes: `text-lg font-bold text-left text-gray-800`,
+  checkboxes: `text-lg font-bold text-left text-gray-800 mt-3`,
   imageUploadContainer: `flex flex-col bg-slate-200 p-5`,
   imageFileUpload: `block w-full text-sm text-slate-500
       file:mr-4 file:py-2 file:px-4
@@ -63,8 +60,6 @@ const ModalAddEditRecipe = ({
         recipeInstructions: selectedRecipe.recipeInstructions,
         recipeNotes: selectedRecipe.recipeNotes,
         isDinner: selectedRecipe.isDinner,
-        isBreakfast: selectedRecipe.isBreakfast,
-        isLunch: selectedRecipe.isLunch,
         imagePath: selectedRecipe.imagePath,
       };
     } else {
@@ -74,8 +69,6 @@ const ModalAddEditRecipe = ({
         recipeInstructions: [],
         recipeNotes: "",
         isDinner: false,
-        isBreakfast: false,
-        isLunch: false,
         imagePath: imagePlaceholderURL,
       };
     }
@@ -86,12 +79,7 @@ const ModalAddEditRecipe = ({
   const [isDinnerChecked, setIsDinnerChecked] = useState(
     editMode ? selectedRecipe.isDinner : false
   );
-  const [isBreakfastChecked, setIsBreakfastChecked] = useState(
-    editMode ? selectedRecipe.isBreakfast : false
-  );
-  const [isLunchChecked, setIsLunchChecked] = useState(
-    editMode ? selectedRecipe.isLunch : false
-  );
+  
 
   let recipeTitlePlaceholder = "Add Recipe Title";
   let recipeIngredientPlaceholder = "Add ingredients separated by commas";
@@ -109,8 +97,6 @@ const ModalAddEditRecipe = ({
       recipeInstructions: fullRecipe.recipeInstructions,
       recipeNotes: fullRecipe.recipeNotes,
       isDinner: fullRecipe.isDinner,
-      isBreakfast: fullRecipe.isBreakfast,
-      isLunch: fullRecipe.isLunch,
       imagePath: fullRecipe.imagePath,
     });
     setNewRecipeModal(false);
@@ -151,8 +137,6 @@ const ModalAddEditRecipe = ({
       recipeInstructions: fullRecipe.recipeInstructions,
       recipeNotes: fullRecipe.recipeNotes,
       isDinner: fullRecipe.isDinner,
-      isBreakfast: fullRecipe.isBreakfast,
-      isLunch: fullRecipe.isLunch,
       imagePath: fullRecipe.imagePath,
     });
     setViewRecipesModal(false);
@@ -309,36 +293,7 @@ const ModalAddEditRecipe = ({
                       />{" "}
                       Add to this weeks dinners?
                     </label>
-                    <label className={style.checkboxes}>
-                      <input
-                        type="checkbox"
-                        checked={isBreakfastChecked}
-                        onChange={() => {
-                          setIsBreakfastChecked((prevState) => !prevState);
-                          setFullRecipe((prevRecipe) => ({
-                            ...prevRecipe,
-                            isBreakfast: !prevRecipe.isBreakfast,
-                          }));
-                        }}
-                        className={style.checkboxes}
-                      />{" "}
-                      Add to this weeks breakfasts?
-                    </label>
-                    <label className={style.checkboxes}>
-                      <input
-                        type="checkbox"
-                        checked={isLunchChecked}
-                        onChange={() => {
-                          setIsLunchChecked((prevState) => !prevState);
-                          setFullRecipe((prevRecipe) => ({
-                            ...prevRecipe,
-                            isLunch: !prevRecipe.isLunch,
-                          }));
-                        }}
-                        className={style.checkboxes}
-                      />{" "}
-                      Add to this weeks lunches?
-                    </label>
+                    
                   </div>
                   <br />
                   <button

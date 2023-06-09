@@ -6,8 +6,6 @@ import {
   onSnapshot,
   updateDoc,
   doc,
-  addDoc,
-  deleteDoc,
 } from "firebase/firestore";
 import { FaRegTrashAlt } from "react-icons/fa";
 import RecipeSingleView from "./RecipeSingleView";
@@ -31,7 +29,6 @@ const MainDinnersView = () => {
   //can also use the trash can icon to toggle isDinner and delete it from this view
 
   const [selectedDinners, setSelectedDinners] = useState([]);
-  const [viewSingleRecipe, setViewSingleRecipe] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState();
   const [viewRecipesModal, setViewRecipesModal] = useState(false);
 
@@ -61,8 +58,7 @@ const MainDinnersView = () => {
   //show a single recipe when clicked
   function handleRecipeClick (item){
     setSelectedRecipe(item)
-   setViewSingleRecipe(true)
-   setViewRecipesModal(true)
+    setViewRecipesModal(true)
   }
 
   //<RecipeSingleView selectedRecipe={item} setViewRecipesModal={true}/>

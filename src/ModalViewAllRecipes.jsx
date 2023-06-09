@@ -6,10 +6,6 @@ import {
   query,
   collection,
   onSnapshot,
-  updateDoc,
-  doc,
-  addDoc,
-  deleteDoc,
 } from "firebase/firestore";
 
 const style = {

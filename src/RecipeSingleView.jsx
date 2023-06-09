@@ -50,7 +50,6 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
 
   const ingredientsArr = selectedRecipe.recipeIngredients;
 
-  
   const formatRecipeNotes = (recipeNotes) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return recipeNotes.replace(urlRegex, (url) => {
@@ -59,8 +58,6 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   };
 
   const formattedRecipeNotes = formatRecipeNotes(selectedRecipe.recipeNotes);
-
-
 
   const listIngredients = ingredientsArr.map((item, index) => (
     <div className={style.ingredientsContainer} key={index}>
@@ -108,7 +105,6 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
     setEditMode(false);
   };
 
- 
   const deleteRecipe = async (selectedRecipe) => {
     await deleteDoc(doc(db, "recipes", selectedRecipe.id));
     setViewRecipesModal(false);
@@ -148,18 +144,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
                 >
                   + Dinners
                 </button>
-                <button
-                  className={style.button}
-                  onClick={() => addToLunches(selectedRecipe)}
-                >
-                  + Lunches
-                </button>
-                <button
-                  className={style.button}
-                  onClick={() => addToBreakfasts(selectedRecipe)}
-                >
-                  + Breakfasts
-                </button>
+
                 {editMode ? (
                   <button
                     className={style.editButton}
@@ -233,9 +218,8 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
             </>
           </div>
         </div>
-        
       </div>
-    <div className="opacity-50 fixed inset-0 z-40 bg-black"></div>
+      <div className="opacity-50 fixed inset-0 z-40 bg-black"></div>
     </>
   );
 };

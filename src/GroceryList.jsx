@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { AiOutlinePlus, AiOutlineCloseSquare } from "react-icons/ai";
-import { FaRegTrashAlt  } from "react-icons/fa";
 import { db } from "./firebase";
 import {
   query,
   collection,
   onSnapshot,
-  updateDoc,
   doc,
   addDoc,
   deleteDoc,
