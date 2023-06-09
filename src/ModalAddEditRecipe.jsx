@@ -156,9 +156,10 @@ const ModalAddEditRecipe = ({
   };
 
   const closeModal = () => {
-    
-    {editMode ? setViewRecipesModal(false) : setNewRecipeModal(false)}
-  }
+    {
+      editMode ? setViewRecipesModal(false) : setNewRecipeModal(false);
+    }
+  };
 
   return (
     <>
@@ -168,11 +169,12 @@ const ModalAddEditRecipe = ({
           <div className={style.modalOuterContainer}>
             {/*header*/}
             <div className={style.modalHeader}>
-              <h3 className={style.modalTitle}>{editMode ? "Edit Recipe" : "Add new recipe"}</h3>
-              <button
-                className={style.modalXButton}
-                onClick={closeModal}
-              >×</button>
+              <h3 className={style.modalTitle}>
+                {editMode ? "Edit Recipe" : "Add new recipe"}
+              </h3>
+              <button className={style.modalXButton} onClick={closeModal}>
+                ×
+              </button>
             </div>
             {/*body*/}
 
@@ -199,12 +201,19 @@ const ModalAddEditRecipe = ({
                   <h3 className={style.heading}>Ingredients:</h3>
                   <textarea
                     value={fullRecipe.recipeIngredients}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const cleanedValue = e.target.value
+                        .replace(/\u25A2/g, "") // Remove all occurrences of "▢" character
+                        .replace(/•/g, "") // Remove all occurrences of bullet points
+                        .split("\n")
+                        .map((ingredient) => ingredient)
+                        .filter((ingredient) => ingredient !== ""); // Remove empty ingredients
+
                       setFullRecipe((prevRecipe) => ({
                         ...prevRecipe,
-                        recipeIngredients: e.target.value.split(","),
-                      }))
-                    }
+                        recipeIngredients: cleanedValue,
+                      }));
+                    }}
                     className={style.inputTextAreas}
                     rows={"5"}
                     placeholder={
