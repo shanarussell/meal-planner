@@ -127,7 +127,6 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
         <div className={style.modalOuterContainer}>
           {/*header*/}
           <div className={style.modalHeader}>
-            <h3 className={style.modalTitle}>Recipes</h3>
             <button
               className={style.modalXButton}
               onClick={() => setViewRecipesModal(false)}

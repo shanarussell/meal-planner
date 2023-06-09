@@ -81,13 +81,13 @@ const ModalAddEditRecipe = ({
 
   const [imageUpload, setImageUpload] = useState(null);
   const [isDinnerChecked, setIsDinnerChecked] = useState(
-    editMode && selectedRecipe.isDinner
+    editMode ? selectedRecipe.isDinner : false
   );
   const [isBreakfastChecked, setIsBreakfastChecked] = useState(
-    editMode && selectedRecipe.isBreakfast
+    editMode ? selectedRecipe.isBreakfast : false
   );
   const [isLunchChecked, setIsLunchChecked] = useState(
-    editMode && selectedRecipe.isLunch
+    editMode ? selectedRecipe.isLunch : false
   );
 
   let recipeTitlePlaceholder = "Add Recipe Title";
