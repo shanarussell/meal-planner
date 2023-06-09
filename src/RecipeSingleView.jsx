@@ -49,6 +49,19 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   const [editMode, setEditMode] = useState(false);
 
   const ingredientsArr = selectedRecipe.recipeIngredients;
+
+  
+  const formatRecipeNotes = (recipeNotes) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    return recipeNotes.replace(urlRegex, (url) => {
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+    });
+  };
+
+  const formattedRecipeNotes = formatRecipeNotes(selectedRecipe.recipeNotes);
+
+
+
   const listIngredients = ingredientsArr.map((item, index) => (
     <div className={style.ingredientsContainer} key={index}>
       <div
@@ -205,7 +218,10 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
                   <div className={style.heading}>Instructions:</div>
                   <div className={style.text}>{listInstructions}</div>
                   <div className={style.heading}>Notes:</div>
-                  <div className={style.text}>{selectedRecipe.recipeNotes}</div>
+                  <div
+        className={style.text}
+        dangerouslySetInnerHTML={{ __html: formattedRecipeNotes }}
+      ></div>
                 </div>
               )}
             </div>
