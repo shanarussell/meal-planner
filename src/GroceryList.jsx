@@ -17,11 +17,11 @@ const style = {
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
   form: `flex justify-between`,
   input: `border p-2 w-full text-xl`,
-  button: `border p-4 ml-2 bg-[#5D9C59] text-slate-100`,
+  button: `border p-4 ml-2 bg-[#116A7B] text-slate-100`,
   groceryItemContainer: `flex flex-row flex-wrap mt-4`,
-  groceryItem: `flex flex-row border bg-[#5D9C59] rounded-lg shadow align-middle mr-2 mt-2`,
+  groceryItem: `flex flex-row border bg-[#116A7B] rounded-lg shadow align-middle mr-2 mt-2`,
   groceryItemText: `text-slate-100 ml-5 mt-3 uppercase font-bold`,
-  trashButton: `ml-5 pr-3 mt-3 mb-3 text-stone-900 text-2xl`,
+  trashButton: `ml-5 pr-3 mt-3 mb-3 text-white text-2xl`,
   count: `text-center p-2`,
 };
 

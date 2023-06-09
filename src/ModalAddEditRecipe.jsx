@@ -30,7 +30,7 @@ const style = {
   heading: `text-xl font-bold text-left text-gray-800 p-2`,
   inputRecipeName: `border p-2 w-1/2 text-xl mb-4`,
   inputTextAreas: `border p-2 w-full text-xl mb-4`,
-  submitButton: `bg-[#5D9C59] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
+  submitButton: `bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
   checkboxesContainer: `flex flex-col`,
   checkboxes: `text-lg font-bold text-left text-gray-800`,
   imageUploadContainer: `flex flex-col bg-slate-200 p-5`,
@@ -38,9 +38,9 @@ const style = {
       file:mr-4 file:py-2 file:px-4
       file:rounded-lg file:border-0
       file:text-sm file:font-semibold
-      file:bg-[#5D9C59] file:text-white
+      file:bg-[#116A7B] file:text-white
       hover:file:bg-violet-100`,
-  imageUploadButton: `bg-[#5D9C59] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
+  imageUploadButton: `bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
 };
 
 const ModalAddEditRecipe = ({

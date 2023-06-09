@@ -16,7 +16,7 @@ const style = {
   container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8`,
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
   dinnerGrid: `flex justify-around`,
-  singleRecipeContainer: `h-64 w-64 bg-[#5D9C59] m-3 py-3 px-6 rounded shadow relative`, // Added 'relative' positioning
+  singleRecipeContainer: `h-64 w-64 bg-[#116A7B] m-3 py-3 px-6 rounded shadow relative`, // Added 'relative' positioning
   singleRecipeImageContainer: `box-border h-36 mt-2 mb-2`,
   thumbnailImage: `h-full w-full object-cover`,
   recipeTitle: `text-md font-bold text-left text-white`,

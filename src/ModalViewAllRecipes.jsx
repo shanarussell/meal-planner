@@ -22,11 +22,11 @@ const style = {
   modalTextContainer: `relative p-6`,
   greyContainer: `flex-col bg-slate-100 w-full rounded-md shadow-xl p-4`,
   recipeContainer: `flex flex-row basis-full flex-wrap justify-stretch`,
-  singleRecipeContainer: `h-56 w-64 bg-[#C7E8CA] m-3 py-3 px-6 rounded shadow`,
+  singleRecipeContainer: `h-56 w-64 bg-[#116A7B] m-3 py-3 px-6 rounded shadow`,
   singleRecipeImageContainer: `box-border h-36 mt-2 mb-2`,
   singleRecipeTextContainer: ``,
   thumbnailImage: `h-full w-full object-cover`,
-  recipeTitle: `text-md font-bold text-left text-gray-800`,
+  recipeTitle: `text-md font-bold text-left text-white`,
 };
 
 const ModalViewAllRecipes = ({ setViewRecipesModal }) => {

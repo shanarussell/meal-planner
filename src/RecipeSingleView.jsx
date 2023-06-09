@@ -30,20 +30,19 @@ const style = {
   recipeAndButtonsContainer: `flex flex-col`,
   buttonsContainer: `flex flex-row basis-full flex-wrap justify-stretch`,
   recipeContainer: `flex flex-col basis-full flex-wrap justify-stretch`,
-  recipeTitle: `text-5xl font-bold text-left text-gray-800 p-2 mb-3`,
-  heading: `text-2xl font-bold text-left text-gray-800 p-2 mt-4`,
+  recipeTitle: `text-5xl font-bold text-left text-[#116A7B] p-2 mb-3`,
+  heading: `text-3xl font-bold text-left text-[#116A7B] p-2 mt-4`,
   text: `text-lg font-bold text-left text-gray-800 p-2`,
-  singleRecipe: `bg-[#5D9C59] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
-  button: `bg-[#5D9C59] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  singleRecipe: `bg-[#116A7B] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  button: `bg-[#116A7B] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   editButton: `bg-[#DF2E38] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   deleteButton: `bg-[#DF2E38] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   ingredientsContainer: `flex flex-row mb-1`,
-  plusButton: `bg-[#5D9C59] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
+  plusButton: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
   imageContainer: `h-64 w-96`,
   image: `h-full w-full object-cover`,
   editContainer: `flex flex-row`,
-  editTitleButton: `bg-[#5D9C59] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
-  
+  editTitleButton: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
 };
 
 const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
