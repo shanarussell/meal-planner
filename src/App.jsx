@@ -13,8 +13,7 @@ function App() {
   return (
     <div className={style.mainContainer}>
         <MainDinnersView />
-        <MainLunchesView />
-        <MainBreakfastsView />
+        
         <MainRecipesView />
         <GroceryList />
     </div>

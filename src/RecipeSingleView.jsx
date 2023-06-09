@@ -20,7 +20,7 @@ import ModalAddEditRecipe from "./ModalAddEditRecipe";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
-  modalSize: `relative w-auto mx-20 w-full max-h-full overflow-auto`,
+  modalSize: `relative w-auto mx-20 mt-10 w-full max-h-full overflow-auto`,
   modalOuterContainer: `rounded-lg shadow-lg flex flex-col w-full bg-white outline-none`,
   modalHeader: `flex items-start justify-between p-5 border-b rounded-t`,
   modalTitle: `text-3xl font-semibold`,
@@ -30,7 +30,7 @@ const style = {
   recipeAndButtonsContainer: `flex flex-col`,
   buttonsContainer: `flex flex-row basis-full flex-wrap justify-stretch`,
   recipeContainer: `flex flex-col basis-full flex-wrap justify-stretch`,
-  recipeTitle: `text-5xl font-bold text-left text-gray-800 p-2`,
+  recipeTitle: `text-5xl font-bold text-left text-gray-800 p-2 mb-3`,
   heading: `text-2xl font-bold text-left text-gray-800 p-2 mt-4`,
   text: `text-lg font-bold text-left text-gray-800 p-2`,
   singleRecipe: `bg-[#5D9C59] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
@@ -43,6 +43,9 @@ const style = {
   image: `h-full w-full object-cover`,
   editContainer: `flex flex-row`,
   editTitleButton: `bg-[#5D9C59] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
+  overlay: `
+    fixed top-0 left-0 z-40 w-full h-full bg-gray-900
+    flex justify-center items-center`,
 };
 
 const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
@@ -134,23 +137,13 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   };
 
   return (
-    <div className={style.modalPosition}>
-      <div className={style.modalSize}>
-        {/*content*/}
-        <div className={style.modalOuterContainer}>
-          {/*header*/}
-          <div className={style.modalHeader}>
-            <button
-              className={style.modalXButton}
-              onClick={() => setViewRecipesModal(false)}
-            >
-              <span className={style.modalCloseButton}>×</span>
-            </button>
-          </div>
-          <>
-          <div className={style.modalTextContainer}>
-              <div className={style.greyContainer}>
-            <div className={style.recipeAndButtonsContainer}>
+    <div className={style.overlay}>
+      <div className={style.modalPosition}>
+        <div className={style.modalSize}>
+          {/*content*/}
+          <div className={style.modalOuterContainer}>
+            {/*header*/}
+            <div className={style.modalHeader}>
               <div className={style.buttonsContainer}>
                 <button
                   className={style.button}
@@ -193,40 +186,55 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
                   Delete Recipe
                 </button>
               </div>
-              {editMode ? (
-                <ModalAddEditRecipe
-                  selectedRecipe={selectedRecipe}
-                  editMode={editMode}
-                  setViewRecipesModal={setViewRecipesModal}
-                />
-              ) : (
-                <div className={style.recipeContainer}>
-                  <div className={style.editContainer}>
-                    <div className={style.recipeTitle}>
-                      {selectedRecipe.recipeName}
-                    </div>
-                  </div>
-                  <div className={style.imageContainer}>
-                    <img
-                      className={style.image}
-                      src={selectedRecipe.imagePath}
-                    />
-                  </div>
-
-                  <div className={style.heading}>Ingredients:</div>
-                  <div className={style.text}>{listIngredients}</div>
-                  <div className={style.heading}>Instructions:</div>
-                  <div className={style.text}>{listInstructions}</div>
-                  <div className={style.heading}>Notes:</div>
-                  <div
-        className={style.text}
-        dangerouslySetInnerHTML={{ __html: formattedRecipeNotes }}
-      ></div>
-                </div>
-              )}
+              <button
+                className={style.modalXButton}
+                onClick={() => setViewRecipesModal(false)}
+              >
+                <span className={style.modalCloseButton}>×</span>
+              </button>
             </div>
-            </div></div>
-          </>
+            <>
+              <div className={style.modalTextContainer}>
+                <div className={style.greyContainer}>
+                  <div className={style.recipeAndButtonsContainer}>
+                    {editMode ? (
+                      <ModalAddEditRecipe
+                        selectedRecipe={selectedRecipe}
+                        editMode={editMode}
+                        setViewRecipesModal={setViewRecipesModal}
+                      />
+                    ) : (
+                      <div className={style.recipeContainer}>
+                        <div className={style.editContainer}>
+                          <div className={style.recipeTitle}>
+                            {selectedRecipe.recipeName}
+                          </div>
+                        </div>
+                        <div className={style.imageContainer}>
+                          <img
+                            className={style.image}
+                            src={selectedRecipe.imagePath}
+                          />
+                        </div>
+
+                        <div className={style.heading}>Ingredients:</div>
+                        <div className={style.text}>{listIngredients}</div>
+                        <div className={style.heading}>Instructions:</div>
+                        <div className={style.text}>{listInstructions}</div>
+                        <div className={style.heading}>Notes:</div>
+                        <div
+                          className={style.text}
+                          dangerouslySetInnerHTML={{
+                            __html: formattedRecipeNotes,
+                          }}
+                        ></div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </>
+          </div>
         </div>
       </div>
     </div>
