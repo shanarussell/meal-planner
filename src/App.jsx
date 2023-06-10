@@ -1,7 +1,5 @@
 import GroceryList from "./GroceryList";
 import MainDinnersView from "./MainDinnersView";
-import MainLunchesView from "./MainLunchesView";
-import MainBreakfastsView from "./MainBreakfastsView";
 import MainRecipesView from "./MainRecipesView";
 
 const style = {
