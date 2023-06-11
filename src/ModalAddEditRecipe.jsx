@@ -72,6 +72,7 @@ const ModalAddEditRecipe = ({
   });
 
   const [formatIngredients, setFormatIngredients] = useState("");
+  const [formatInstructions, setFormatInstructions] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUploadedState, setImageUploadedState] = useState(false);
   const [isDinnerChecked, setIsDinnerChecked] = useState(
@@ -79,8 +80,7 @@ const ModalAddEditRecipe = ({
   );
 
   let recipeTitlePlaceholder = "Add Recipe Title";
-  let recipeInstructionsPlaceholder =
-    "Add instructions with each step separated by a comma";
+
   let recipeNotesPlaceholder = "Add Notes with each step separated by a comma";
 
   // Create Recipe (add)
@@ -144,7 +144,7 @@ const ModalAddEditRecipe = ({
     }
   };
 
-  function pasteFromWeb() {
+  function pasteIngredientsFromWeb() {
     return (
       <div>
         <textarea
@@ -175,7 +175,7 @@ const ModalAddEditRecipe = ({
     );
   }
 
-  function pasteManually(){
+  function pasteIngredientsManually(){
     return (
       <div>
         <textarea
@@ -198,6 +198,60 @@ const ModalAddEditRecipe = ({
       </div>
     );
 
+  }
+
+  function pasteInstructionsFromWeb() {
+    return (
+      <div>
+        <textarea
+          value={fullRecipe.recipeInstructions}
+          onChange={(e) =>
+            setFullRecipe((prevRecipe) => ({
+              ...prevRecipe,
+              recipeInstructions: e.target.value
+                .replace(/-/g, " ")
+                .replace(/•/g, "")
+                .replace(/\u25A2/g, "")
+                .replace(/\*/g, "") //replace *
+                .replace(/http\S+/g, "") // replace for URLs starting with "http"
+                .replace(/\[/g, "") // replace "["
+                .replace(/\]/g, "") // replace "]"
+                .split(/[,\n]/),
+            }))
+          }
+          className={style.inputTextAreas}
+          rows={"5"}
+          placeholder={
+            editMode
+              ? selectedRecipe.recipeInstructions
+              : "Paste list from web to be auto-formatted. Removes dashes, bullet points, brackets, boxes, asteriks and urls"
+          }
+        />
+      </div>
+    );
+  }
+
+  function pasteInstructionsManually() {
+    return (
+      <div>
+        <textarea
+          value={fullRecipe.recipeInstructions}
+          onChange={(e) =>
+            setFullRecipe((prevRecipe) => ({
+              ...prevRecipe,
+              recipeInstructions: e.target.value.split(","),
+            }))
+          }
+          className={style.inputTextAreas}
+          rows={"5"}
+          placeholder={
+            editMode
+              ? selectedRecipe.recipeInstructions
+              : "Type in instructions separated with commas"
+          }
+        />
+      </div>
+    );
   }
 
   return (
@@ -240,7 +294,7 @@ const ModalAddEditRecipe = ({
                   <h3 className={style.heading}>Ingredients:</h3>
                   <button
                     className={
-                      (formatIngredients === "web" || formatIngredients === "")
+                      formatIngredients === "web" || formatIngredients === ""
                         ? style.greenTab
                         : style.whiteTab
                     }
@@ -266,31 +320,42 @@ const ModalAddEditRecipe = ({
                     Type ingredients manually
                   </button>
 
-                  {formatIngredients === "manual" && pasteManually()}
-                  {(formatIngredients === "web" ||
-                    formatIngredients === "") && pasteFromWeb()}
+                  {formatIngredients === "manual" && pasteIngredientsManually()}
+                  {(formatIngredients === "web" || formatIngredients === "") &&
+                    pasteIngredientsFromWeb()}
 
                   <h3 className={style.heading}>Cooking Instructions:</h3>
-                  <textarea
-                    value={fullRecipe.recipeInstructions}
-                    onChange={(e) =>
-                      setFullRecipe((prevRecipe) => ({
-                        ...prevRecipe,
-                        recipeInstructions: e.target.value
-                          .replace(/-/g, " ")
-                          .replace(/•/g, "")
-                          .replace(/\u25A2/g, "")
-                          .split(/[.\n]/),
-                      }))
+                  <button
+                    className={
+                      formatInstructions === "web" || formatInstructions === ""
+                        ? style.greenTab
+                        : style.whiteTab
                     }
-                    className={style.inputTextAreas}
-                    rows={"7"}
-                    placeholder={
-                      editMode
-                        ? selectedRecipe.recipeInstructions
-                        : recipeInstructionsPlaceholder
+                    onClick={(e) => {
+                      e.preventDefault(e);
+                      setFormatInstructions("web");
+                    }}
+                  >
+                    Paste instructions from web
+                  </button>
+
+                  <button
+                    className={
+                      formatInstructions === "manual"
+                        ? style.greenTab
+                        : style.whiteTab
                     }
-                  />
+                    onClick={(e) => {
+                      e.preventDefault(e);
+                      setFormatInstructions("manual");
+                    }}
+                  >
+                    Type instructions manually
+                  </button>
+
+                  {formatInstructions === "manual" && pasteInstructionsManually()}
+                  {(formatInstructions === "web" || formatInstructions === "") &&
+                    pasteInstructionsFromWeb()}
                   <h3 className={style.heading}>Notes, links, etc:</h3>
                   <textarea
                     value={fullRecipe.recipeNotes}
