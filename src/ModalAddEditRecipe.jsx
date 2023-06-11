@@ -207,7 +207,7 @@ const ModalAddEditRecipe = ({
                       setFullRecipe((prevRecipe) => ({
                         ...prevRecipe,
                         recipeInstructions: e.target.value
-                          .replace(/-/g, "")
+                          .replace(/-/g, " ")
                           .replace(/•/g, "")
                           .replace(/\u25A2/g, "")
                           .split(/[.\n]/),
