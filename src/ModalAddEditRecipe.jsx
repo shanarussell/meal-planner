@@ -22,6 +22,8 @@ const style = {
   heading: `text-xl font-bold text-left text-gray-800 p-2`,
   inputRecipeName: `border p-2 w-1/2 text-xl mb-4`,
   inputTextAreas: `border p-2 w-full text-xl mb-4`,
+  greenTab: `bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-t-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-0 ease-linear transition-all duration-150`,
+  whiteTab: `bg-white text-[#116A7B] active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-t-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-0 ease-linear transition-all duration-150`,
   submitButton: `bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
   checkboxesContainer: `flex flex-col`,
   checkboxes: `text-lg font-bold text-left text-gray-800 mt-3`,
@@ -69,6 +71,7 @@ const ModalAddEditRecipe = ({
     }
   });
 
+  const [formatIngredients, setFormatIngredients] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
   const [imageUploadedState, setImageUploadedState] = useState(false);
   const [isDinnerChecked, setIsDinnerChecked] = useState(
@@ -76,7 +79,6 @@ const ModalAddEditRecipe = ({
   );
 
   let recipeTitlePlaceholder = "Add Recipe Title";
-  let recipeIngredientPlaceholder = "Add ingredients separated by commas";
   let recipeInstructionsPlaceholder =
     "Add instructions with each step separated by a comma";
   let recipeNotesPlaceholder = "Add Notes with each step separated by a comma";
@@ -142,6 +144,62 @@ const ModalAddEditRecipe = ({
     }
   };
 
+  function pasteFromWeb() {
+    return (
+      <div>
+        <textarea
+          value={fullRecipe.recipeIngredients}
+          onChange={(e) =>
+            setFullRecipe((prevRecipe) => ({
+              ...prevRecipe,
+              recipeIngredients: e.target.value
+                .replace(/-/g, " ")
+                .replace(/•/g, "")
+                .replace(/\u25A2/g, "")
+                .replace(/\*/g, "") //replace *
+                .replace(/http\S+/g, "") // replace for URLs starting with "http"
+                .replace(/\[/g, "") // replace "["
+                .replace(/\]/g, "") // replace "]"
+                .split(/[,\n]/),
+            }))
+          }
+          className={style.inputTextAreas}
+          rows={"5"}
+          placeholder={
+            editMode
+              ? selectedRecipe.recipeIngredients
+              : "Paste list from web to be auto-formatted. Removes dashes, bullet points, brackets, boxes, asteriks and urls"
+          }
+        />
+      </div>
+    );
+  }
+
+  function pasteManually(){
+    return (
+      <div>
+        <textarea
+          value={fullRecipe.recipeIngredients}
+          onChange={(e) =>
+            setFullRecipe((prevRecipe) => ({
+              ...prevRecipe,
+              recipeIngredients: e.target.value
+                .split(","),
+            }))
+          }
+          className={style.inputTextAreas}
+          rows={"5"}
+          placeholder={
+            editMode
+              ? selectedRecipe.recipeIngredients
+              : "Type in ingredients separated with commas"
+          }
+        />
+      </div>
+    );
+
+  }
+
   return (
     <>
       <div className={style.modalPosition}>
@@ -180,26 +238,38 @@ const ModalAddEditRecipe = ({
                     }
                   />
                   <h3 className={style.heading}>Ingredients:</h3>
-                  <textarea
-                    value={fullRecipe.recipeIngredients}
-                    onChange={(e) =>
-                      setFullRecipe((prevRecipe) => ({
-                        ...prevRecipe,
-                        recipeIngredients: e.target.value
-                          .replace(/-/g, "")
-                          .replace(/•/g, "")
-                          .replace(/\u25A2/g, "")
-                          .split(/[,\n]/),
-                      }))
+                  <button
+                    className={
+                      (formatIngredients === "web" || formatIngredients === "")
+                        ? style.greenTab
+                        : style.whiteTab
                     }
-                    className={style.inputTextAreas}
-                    rows={"5"}
-                    placeholder={
-                      editMode
-                        ? selectedRecipe.recipeIngredients
-                        : recipeIngredientPlaceholder
+                    onClick={(e) => {
+                      e.preventDefault(e);
+                      setFormatIngredients("web");
+                    }}
+                  >
+                    Paste ingredients from web
+                  </button>
+
+                  <button
+                    className={
+                      formatIngredients === "manual"
+                        ? style.greenTab
+                        : style.whiteTab
                     }
-                  />
+                    onClick={(e) => {
+                      e.preventDefault(e);
+                      setFormatIngredients("manual");
+                    }}
+                  >
+                    Type ingredients manually
+                  </button>
+
+                  {formatIngredients === "manual" && pasteManually()}
+                  {(formatIngredients === "web" ||
+                    formatIngredients === "") && pasteFromWeb()}
+
                   <h3 className={style.heading}>Cooking Instructions:</h3>
                   <textarea
                     value={fullRecipe.recipeInstructions}
