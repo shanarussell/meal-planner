@@ -40,7 +40,7 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
       });
 
       setAllRecipes(allRecipesArray);
-      console.log(allRecipes)
+     
     });
     return () => unsubscribe();
   }, []);
@@ -48,7 +48,7 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
   //when a recipe is clicked, the list hides and a single recipe is shown
   const handleClick = (recipe) => {
     setListAll(false);
-    console.log(recipe)
+   
     setSelectedRecipe(recipe);
   };
 

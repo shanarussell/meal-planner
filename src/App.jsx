@@ -4,14 +4,13 @@ import MainRecipesView from "./MainRecipesView";
 
 const style = {
   bg: `h-screen w-screen p-4 bg-black`,
-  mainContainer: `bg-[#CDC2AE] flex flex-col pr-5 pl-8`,
+  mainContainer: `bg-[#CDC2AE] flex flex-col pr-5 pl-8 h-screen`,
 };
 
 function App() {
   return (
     <div className={style.mainContainer}>
         <MainDinnersView />
-        
         <MainRecipesView />
         <GroceryList />
     </div>
