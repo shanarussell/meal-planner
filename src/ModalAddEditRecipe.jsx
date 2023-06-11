@@ -168,14 +168,14 @@ const ModalAddEditRecipe = ({
           placeholder={
             editMode
               ? selectedRecipe.recipeIngredients
-              : "Paste list from web to be auto-formatted. Removes dashes, bullet points, brackets, boxes, asteriks and urls"
+              : "Paste list from web to be auto-formatted. Removes dashes, bullet points, brackets, boxes, asterisks and urls. Note: you may have to manually remove extra commas to avoid unnecessary line breaks"
           }
         />
       </div>
     );
   }
 
-  function pasteIngredientsManually(){
+  function pasteIngredientsManually() {
     return (
       <div>
         <textarea
@@ -183,8 +183,7 @@ const ModalAddEditRecipe = ({
           onChange={(e) =>
             setFullRecipe((prevRecipe) => ({
               ...prevRecipe,
-              recipeIngredients: e.target.value
-                .split(","),
+              recipeIngredients: e.target.value.split(","),
             }))
           }
           className={style.inputTextAreas}
@@ -197,7 +196,6 @@ const ModalAddEditRecipe = ({
         />
       </div>
     );
-
   }
 
   function pasteInstructionsFromWeb() {
@@ -209,14 +207,16 @@ const ModalAddEditRecipe = ({
             setFullRecipe((prevRecipe) => ({
               ...prevRecipe,
               recipeInstructions: e.target.value
-                .replace(/-/g, " ")
+                .replace(/-/g, " to ")
                 .replace(/•/g, "")
                 .replace(/\u25A2/g, "")
                 .replace(/\*/g, "") //replace *
                 .replace(/http\S+/g, "") // replace for URLs starting with "http"
                 .replace(/\[/g, "") // replace "["
                 .replace(/\]/g, "") // replace "]"
-                .split(/[,\n]/),
+                .replace(/^\d+\.\s+/gm, "") // remove numbers and period from numbered list
+                .split(/[,.\n]/) // split by commas, periods, and newlines
+                .filter((item) => item.trim() !== ""), // filter out blank items
             }))
           }
           className={style.inputTextAreas}
@@ -224,7 +224,7 @@ const ModalAddEditRecipe = ({
           placeholder={
             editMode
               ? selectedRecipe.recipeInstructions
-              : "Paste list from web to be auto-formatted. Removes dashes, bullet points, brackets, boxes, asteriks and urls"
+              : "Paste list from web to be auto-formatted. Removes dashes, bullet points, brackets, boxes, asterisks and urls. Note: you may have to manually remove extra commas to avoid unnecessary line breaks."
           }
         />
       </div>
@@ -353,8 +353,10 @@ const ModalAddEditRecipe = ({
                     Type instructions manually
                   </button>
 
-                  {formatInstructions === "manual" && pasteInstructionsManually()}
-                  {(formatInstructions === "web" || formatInstructions === "") &&
+                  {formatInstructions === "manual" &&
+                    pasteInstructionsManually()}
+                  {(formatInstructions === "web" ||
+                    formatInstructions === "") &&
                     pasteInstructionsFromWeb()}
                   <h3 className={style.heading}>Notes, links, etc:</h3>
                   <textarea
