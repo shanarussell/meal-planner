@@ -210,7 +210,7 @@ const ModalAddEditRecipe = ({
                           .replace(/-/g, "")
                           .replace(/•/g, "")
                           .replace(/\u25A2/g, "")
-                          .split(/[,\n]/),
+                          .split(/[.\n]/),
                       }))
                     }
                     className={style.inputTextAreas}
