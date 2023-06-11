@@ -14,6 +14,8 @@ import {
 import {
   AiOutlineShoppingCart,
   AiOutlineCheck,
+  AiOutlineBorder,
+  AiOutlineCheckSquare,
 } from "react-icons/ai";
 import ModalAddEditRecipe from "./ModalAddEditRecipe";
 
@@ -40,6 +42,8 @@ const style = {
   instructionsList: `list-outside, list-decimal`,
   addToCartButton: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
   addedToCartButton: `bg-[#CDC2AE] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
+  stepUnfinished: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-lg align-middle`,
+  stepFinished: `bg-[#CDC2AE] text-white mr-2 py-3 px-3 rounded shadow text-lg align-middle`,
   imageContainer: `h-64 w-96`,
   image: `h-full w-full object-cover`,
   editContainer: `flex flex-row`,
@@ -49,6 +53,7 @@ const style = {
 const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   const [editMode, setEditMode] = useState(false);
   const [addedToCart, setAddedToCart] = useState([]);
+  const [stepFinished, setStepFinished] = useState([]);
 
   const ingredientsArr = selectedRecipe.recipeIngredients;
 
@@ -69,7 +74,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
             ? style.addedToCartButton
             : style.addToCartButton
         }
-        onClick={(e) => addSingleToGroceryList(i, item)}
+        onClick={() => addSingleToGroceryList(i, item)}
       >
         {addedToCart.includes(i) ? (
           <AiOutlineCheck />
@@ -84,7 +89,23 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   const instructionsArr = selectedRecipe.recipeInstructions;
 
   const listInstructions = instructionsArr.map((item, i) => (
-    <li key={i}>{item}</li>
+    <div className={style.ingredientsContainer} key={i}>
+      <div
+        className={
+          stepFinished.includes(i) ? style.stepFinished : style.stepUnfinished
+        }
+        onClick={() => {
+          setStepFinished((prevAdded) => [...prevAdded, i]);
+        }}
+      >
+        {stepFinished.includes(i) ? (
+          <AiOutlineCheckSquare />
+        ) : (
+          <AiOutlineBorder />
+        )}
+      </div>
+      <div>{item}</div>
+    </div>
   ));
 
   // add to category (refactor these 3 into 1 later)
