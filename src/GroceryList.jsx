@@ -8,6 +8,7 @@ import {
   doc,
   addDoc,
   deleteDoc,
+  getDocs,
 } from "firebase/firestore";
 
 const style = {
@@ -18,6 +19,8 @@ const style = {
   button: `border p-4 ml-2 bg-[#116A7B] text-slate-100`,
   groceryItemContainer: `flex flex-row flex-wrap mt-4`,
   groceryItem: `flex flex-row border bg-[#116A7B] rounded-lg shadow align-middle mr-2 mt-2`,
+  bottomButtonContainer: `flex flex-col mt-2`,
+  deleteAllButton: `bg-[#DF2E38] text-slate-100 rounded-lg shadow align-middle p-3 font-bold`,
   groceryItemText: `text-slate-100 ml-5 mt-3 uppercase font-bold`,
   trashButton: `ml-5 pr-3 mt-3 mb-3 text-white text-2xl`,
   count: `text-center p-2`,
@@ -58,6 +61,16 @@ function GroceryList() {
     await deleteDoc(doc(db, "grocery-item", id));
   };
 
+  // Delete All Grocery Items
+  const deleteAllGroceryItems = async () => {
+    const groceryCollectionRef = collection(db, "grocery-item");
+    const querySnapshot = await getDocs(groceryCollectionRef);
+
+    querySnapshot.forEach((doc) => {
+      deleteDoc(doc.ref);
+    });
+  };
+
   return (
     <div>
       <div className={style.container}>
@@ -91,11 +104,14 @@ function GroceryList() {
           ))}
         </div>
 
-        {groceryItems.length < 1 ? null : (
-          <p
-            className={style.count}
-          >{`You have ${groceryItems.length} grocery list items`}</p>
-        )}
+        <div className={style.bottomButtonContainer}>
+        <button
+          className={style.deleteAllButton}
+          onClick={deleteAllGroceryItems}
+        >
+          Delete ALL items from grocery list
+        </button>
+        </div>
       </div>
     </div>
   );
