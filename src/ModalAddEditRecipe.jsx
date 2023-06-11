@@ -1,12 +1,7 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { db } from "./firebase";
-import {
-  collection,
-  updateDoc,
-  doc,
-  addDoc,
-} from "firebase/firestore";
+import { collection, updateDoc, doc, addDoc } from "firebase/firestore";
 import { storage } from "./firebase";
 import {
   getDownloadURL,
@@ -79,7 +74,6 @@ const ModalAddEditRecipe = ({
   const [isDinnerChecked, setIsDinnerChecked] = useState(
     editMode ? selectedRecipe.isDinner : false
   );
-  
 
   let recipeTitlePlaceholder = "Add Recipe Title";
   let recipeIngredientPlaceholder = "Add ingredients separated by commas";
@@ -188,20 +182,16 @@ const ModalAddEditRecipe = ({
                   <h3 className={style.heading}>Ingredients:</h3>
                   <textarea
                     value={fullRecipe.recipeIngredients}
-                    onChange={(e) => {
-                      const cleanedValue = e.target.value
-                        .replace(/\u25A2/g, "") // Remove all occurrences of "▢" character
-                        .replace(/•/g, "") // Remove all occurrences of bullet points
-                        .replace(/-/g, "")
-                        .split("\n")
-                        .map((ingredient) => ingredient)
-                        .filter((ingredient) => ingredient !== ""); // Remove empty ingredients
-
+                    onChange={(e) =>
                       setFullRecipe((prevRecipe) => ({
                         ...prevRecipe,
-                        recipeIngredients: cleanedValue,
-                      }));
-                    }}
+                        recipeIngredients: e.target.value
+                          .replace(/-/g, "")
+                          .replace(/•/g, "")
+                          .replace(/\u25A2/g, "")
+                          .split(/\|/),
+                      }))
+                    }
                     className={style.inputTextAreas}
                     rows={"5"}
                     placeholder={
@@ -213,20 +203,16 @@ const ModalAddEditRecipe = ({
                   <h3 className={style.heading}>Cooking Instructions:</h3>
                   <textarea
                     value={fullRecipe.recipeInstructions}
-                    onChange={(e) => {
-                      const cleanedValue = e.target.value
-                        .replace(/\u25A2/g, "") // Remove all occurrences of "▢" character
-                        .replace(/•/g, "") // Remove all occurrences of bullet points
-                        .replace(/-/g, "")
-                        .split("\n")
-                        .map((instructions) => instructions)
-                        .filter((instructions) => instructions !== ""); // Remove empty ingredients
-
+                    onChange={(e) =>
                       setFullRecipe((prevRecipe) => ({
                         ...prevRecipe,
-                        recipeInstructions: cleanedValue,
-                      }));
-                    }}
+                        recipeInstructions: e.target.value
+                          .replace(/-/g, "")
+                          .replace(/•/g, "")
+                          .replace(/\u25A2/g, "")
+                          .split(/[,\n]/),
+                      }))
+                    }
                     className={style.inputTextAreas}
                     rows={"7"}
                     placeholder={
@@ -293,7 +279,6 @@ const ModalAddEditRecipe = ({
                       />{" "}
                       Add to this weeks dinners?
                     </label>
-                    
                   </div>
                   <br />
                   <button

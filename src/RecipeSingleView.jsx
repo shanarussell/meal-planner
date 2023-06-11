@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { db } from "./firebase";
 import {
   query,
   collection,
-  onSnapshot,
   updateDoc,
   doc,
   addDoc,
@@ -13,9 +12,6 @@ import {
   where,
 } from "firebase/firestore";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import React from "react";
-import { ref, listAll, getDownloadURL, getStorage } from "firebase/storage";
-import { storage } from "./firebase";
 import ModalAddEditRecipe from "./ModalAddEditRecipe";
 
 const style = {
@@ -59,8 +55,8 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
 
   const formattedRecipeNotes = formatRecipeNotes(selectedRecipe.recipeNotes);
 
-  const listIngredients = ingredientsArr.map((item, index) => (
-    <div className={style.ingredientsContainer} key={index}>
+  const listIngredients = ingredientsArr.map((item, i) => (
+    <div className={style.ingredientsContainer} key={i}>
       <div
         className={style.plusButton}
         onClick={(e) => addSingleToGroceryList(e.target.value, item)}
@@ -73,8 +69,8 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
 
   const instructionsArr = selectedRecipe.recipeInstructions;
 
-  const listInstructions = instructionsArr.map((item) => (
-    <li key={item}>{item}</li>
+  const listInstructions = instructionsArr.map((item, i) => (
+    <li key={i}>{item}</li>
   ));
 
   // add to category (refactor these 3 into 1 later)
@@ -82,18 +78,6 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   const addToDinners = async (selectedRecipe) => {
     await updateDoc(doc(db, "recipes", selectedRecipe.id), {
       isDinner: true,
-    });
-  };
-
-  const addToLunches = async (selectedRecipe) => {
-    await updateDoc(doc(db, "recipes", selectedRecipe.id), {
-      isLunch: true,
-    });
-  };
-
-  const addToBreakfasts = async (selectedRecipe) => {
-    await updateDoc(doc(db, "recipes", selectedRecipe.id), {
-      isBreakfast: true,
     });
   };
 
