@@ -33,7 +33,8 @@ const style = {
   button: `bg-[#116A7B] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   editButton: `bg-[#DF2E38] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   deleteButton: `bg-[#DF2E38] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
-  ingredientsContainer: `flex flex-row mb-1`,
+  ingredientsContainer: `flex flex-row mb-1 `,
+  instructionsList: `list-outside, list-decimal`,
   plusButton: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
   imageContainer: `h-64 w-96`,
   image: `h-full w-full object-cover`,
@@ -186,7 +187,9 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
                         <div className={style.heading}>Ingredients:</div>
                         <div className={style.text}>{listIngredients}</div>
                         <div className={style.heading}>Instructions:</div>
-                        <div className={style.text}>{listInstructions}</div>
+                        <ul className={style.instructionsList}>
+                          {listInstructions}
+                        </ul>
                         <div className={style.heading}>Notes:</div>
                         <div
                           className={style.text}
