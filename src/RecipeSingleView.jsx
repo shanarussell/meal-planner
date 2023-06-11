@@ -11,7 +11,10 @@ import {
   getDocs,
   where,
 } from "firebase/firestore";
-import { AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  AiOutlineShoppingCart,
+  AiOutlineCheck,
+} from "react-icons/ai";
 import ModalAddEditRecipe from "./ModalAddEditRecipe";
 
 const style = {
@@ -35,7 +38,8 @@ const style = {
   deleteButton: `bg-[#DF2E38] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   ingredientsContainer: `flex flex-row mb-1 `,
   instructionsList: `list-outside, list-decimal`,
-  plusButton: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
+  addToCartButton: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
+  addedToCartButton: `bg-[#CDC2AE] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
   imageContainer: `h-64 w-96`,
   image: `h-full w-full object-cover`,
   editContainer: `flex flex-row`,
@@ -44,6 +48,7 @@ const style = {
 
 const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   const [editMode, setEditMode] = useState(false);
+  const [addedToCart, setAddedToCart] = useState([]);
 
   const ingredientsArr = selectedRecipe.recipeIngredients;
 
@@ -59,10 +64,18 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   const listIngredients = ingredientsArr.map((item, i) => (
     <div className={style.ingredientsContainer} key={i}>
       <div
-        className={style.plusButton}
-        onClick={(e) => addSingleToGroceryList(e.target.value, item)}
+        className={
+          addedToCart.includes(i)
+            ? style.addedToCartButton
+            : style.addToCartButton
+        }
+        onClick={(e) => addSingleToGroceryList(i, item)}
       >
-        {<AiOutlineShoppingCart />}
+        {addedToCart.includes(i) ? (
+          <AiOutlineCheck />
+        ) : (
+          <AiOutlineShoppingCart />
+        )}
       </div>
       <div>{item}</div>
     </div>
@@ -96,7 +109,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   };
 
   //add single ingredient to the grocery list
-  const addSingleToGroceryList = async (e, item) => {
+  const addSingleToGroceryList = async (index, item) => {
     // Query the collection to check if the item already exists
     const querySnapshot = await getDocs(
       query(collection(db, "grocery-item"), where("groceryItem", "==", item))
@@ -112,6 +125,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
     await addDoc(collection(db, "grocery-item"), {
       groceryItem: item,
     });
+    setAddedToCart((prevAdded) => [...prevAdded, index]);
   };
 
   return (
