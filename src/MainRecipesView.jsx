@@ -3,11 +3,10 @@ import ModalViewAllRecipes from "./ModalViewAllRecipes";
 import ModalAddEditRecipe from "./ModalAddEditRecipe";
 
 const style = {
-  container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8`,
+  container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8 w-full`,
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
-  recipeGrid: `grid grid-cols-4 gap-1`,
-  singleRecipeContainer: `border p-4 w-[15%] text-center`,
-  buttonContainer: `flex flex-auto items-center justify-around`,
+  recipeGrid: `flex flex-wrap sm:flex-col lg:flex-row`,
+  buttonContainer: `flex flex-auto items-center justify-around sm:flex-col`,
   mainButtons: `w-full bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-lg px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none m-2 ease-linear transition-all duration-150`,
 };
 
@@ -41,7 +40,10 @@ const MainRecipesView = () => {
       ) : null}
 
       {newRecipeModal ? (
-        <ModalAddEditRecipe setNewRecipeModal={setNewRecipeModal} setViewRecipesModal={setViewRecipesModal} />
+        <ModalAddEditRecipe
+          setNewRecipeModal={setNewRecipeModal}
+          setViewRecipesModal={setViewRecipesModal}
+        />
       ) : null}
     </div>
   );

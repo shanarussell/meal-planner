@@ -12,7 +12,7 @@ import {
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
-  modalSize: `relative w-auto mx-20 w-full max-h-full overflow-auto`,
+  modalSize: `relative w-auto mx-5 w-full max-h-full overflow-auto`,
   modalOuterContainer: `mt-5 rounded-lg shadow-lg flex flex-col w-full bg-white outline-none`,
   modalHeader: `flex items-start justify-between p-5 border-b rounded-t`,
   modalTitle: `text-3xl font-semibold`,
@@ -20,8 +20,8 @@ const style = {
   modalTextContainer: `relative p-6`,
   container: `flex-col bg-slate-100 w-full rounded-md shadow-xl p-4`,
   heading: `text-xl font-bold text-left text-gray-800 p-2`,
-  inputRecipeName: `border p-2 w-1/2 text-xl mb-4`,
-  inputTextAreas: `border p-2 w-full text-xl mb-4`,
+  inputRecipeName: `border p-2 w-1/2 text-xl mb-4 w-full`,
+  inputTextAreas: `border p-2 w-full text-lg mb-4`,
   greenTab: `bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-t-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-0 ease-linear transition-all duration-150`,
   whiteTab: `bg-white text-[#116A7B] active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-t-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-0 ease-linear transition-all duration-150`,
   submitButton: `bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,

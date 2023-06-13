@@ -12,17 +12,17 @@ import {
 } from "firebase/firestore";
 
 const style = {
-  container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8`,
+  container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8 w-full`,
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
   form: `flex justify-between`,
   input: `border p-2 w-full text-xl`,
   button: `border p-4 ml-2 bg-[#116A7B] text-slate-100`,
   groceryItemContainer: `flex flex-row flex-wrap mt-4`,
-  groceryItem: `flex flex-row border bg-[#116A7B] rounded-lg shadow align-middle mr-2 mt-2`,
+  groceryItem: `flex flex-row grow border bg-[#116A7B] rounded-lg shadow align-middle mr-2 mt-2`,
   bottomButtonContainer: `flex flex-col mt-2`,
   deleteAllButton: `bg-[#DF2E38] text-slate-100 rounded-lg shadow align-middle p-3 font-bold`,
-  groceryItemText: `text-slate-100 ml-5 mt-3 uppercase font-bold`,
-  trashButton: `ml-5 pr-3 mt-3 mb-3 text-white text-2xl`,
+  groceryItemText: `text-slate-100 ml-1 mt-3 mr-3 uppercase font-bold`,
+  xButton: `ml-3 pr-3 mt-3 mb-3 text-white text-2xl`,
   count: `text-center p-2`,
 };
 
@@ -91,26 +91,26 @@ function GroceryList() {
         <div className={style.groceryItemContainer}>
           {groceryItems.map((groceryItem, id) => (
             <div className={style.groceryItem} key={id}>
-              <div className={style.groceryItemText}>
-                {groceryItem.groceryItem}
-              </div>
               <button
-                className={style.trashButton}
+                className={style.xButton}
                 onClick={() => deleteGroceryItem(groceryItem.id)}
               >
                 {<AiOutlineCloseSquare />}
               </button>
+              <div className={style.groceryItemText}>
+                {groceryItem.groceryItem}
+              </div>
             </div>
           ))}
         </div>
 
         <div className={style.bottomButtonContainer}>
-        <button
-          className={style.deleteAllButton}
-          onClick={deleteAllGroceryItems}
-        >
-          Delete ALL items from grocery list
-        </button>
+          <button
+            className={style.deleteAllButton}
+            onClick={deleteAllGroceryItems}
+          >
+            Delete ALL items from grocery list
+          </button>
         </div>
       </div>
     </div>

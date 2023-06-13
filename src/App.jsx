@@ -3,8 +3,7 @@ import MainDinnersView from "./MainDinnersView";
 import MainRecipesView from "./MainRecipesView";
 
 const style = {
-  bg: `h-screen w-screen p-4 bg-black`,
-  mainContainer: `bg-[#CDC2AE] flex flex-col pr-5 pl-8 h-screen`,
+  mainContainer: `bg-[#CDC2AE] flex flex-col pr-5 pl-8 min-h-screen`,
 };
 
 function App() {

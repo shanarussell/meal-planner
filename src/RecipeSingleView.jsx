@@ -21,33 +21,30 @@ import ModalAddEditRecipe from "./ModalAddEditRecipe";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
-  modalSize: `relative w-auto mx-20 mt-10 w-full max-h-full overflow-auto`,
+  modalSize: `relative w-auto mx-5 mt-10 w-full max-h-full overflow-auto`,
   modalOuterContainer: `rounded-lg shadow-lg flex flex-col w-full bg-white outline-none`,
   modalHeader: `flex items-start justify-between p-5 border-b rounded-t`,
-  modalTitle: `text-3xl font-semibold`,
   modalXButton: `p-1 ml-auto bg-transparent border-0 text-[#DF2E38] float-right text-3xl leading-none font-semibold outline-none`,
   modalTextContainer: `relative p-6`,
   greyContainer: `flex-col bg-slate-100 w-full rounded-md shadow-xl p-4`,
-  recipeAndButtonsContainer: `flex flex-col`,
+  recipeAndButtonsContainer: `flex flex-col flex-wrap`,
   buttonsContainer: `flex flex-row basis-full flex-wrap justify-stretch`,
-  recipeContainer: `flex flex-col basis-full flex-wrap justify-stretch`,
-  recipeTitle: `text-5xl font-bold text-left text-[#116A7B] p-2 mb-3`,
-  heading: `text-3xl font-bold text-left text-[#116A7B] p-2 mt-4`,
-  text: `text-lg font-bold text-left text-gray-800 p-2`,
-  singleRecipe: `bg-[#116A7B] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
+  recipeContainer: `flex flex-col flex-wrap w-full`,
+  recipeTitle: `text-5xl sm:text-3xl font-bold text-left text-[#116A7B] p-2 mb-3 w-full`,
+  heading: `text-3xl font-bold text-left text-[#116A7B] p-2 mt-4 w-full`,
+  text: `text-lg font-bold text-left text-gray-800 p-2 w-full`,
   button: `bg-[#116A7B] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   editButton: `bg-[#DF2E38] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
   deleteButton: `bg-[#DF2E38] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
-  ingredientsContainer: `flex flex-row mb-1 `,
+  ingredientsContainer: `flex flex-row mb-1`,
   instructionsList: `list-outside, list-decimal`,
   addToCartButton: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
   addedToCartButton: `bg-[#CDC2AE] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
   stepUnfinished: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-lg align-middle`,
   stepFinished: `bg-[#CDC2AE] text-white mr-2 py-3 px-3 rounded shadow text-lg align-middle`,
-  imageContainer: `h-64 w-96`,
+  imageContainer: `h-64 w-full`,
   image: `h-full w-full object-cover`,
   editContainer: `flex flex-row`,
-  editTitleButton: `bg-[#116A7B] text-white mr-2 py-3 px-3 rounded shadow text-sm`,
 };
 
 const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
@@ -207,11 +204,11 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
                       />
                     ) : (
                       <div className={style.recipeContainer}>
-                        <div className={style.editContainer}>
+                        
                           <div className={style.recipeTitle}>
                             {selectedRecipe.recipeName}
                           </div>
-                        </div>
+                        
                         <div className={style.imageContainer}>
                           <img
                             className={style.image}
