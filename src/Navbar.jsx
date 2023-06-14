@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from "react-router-dom"
 
 const style = {
   navContainer: `bg-[#116A7B] flex flex-row rounded shadow p-3 mt-5 text-white justify-end`,
@@ -11,9 +12,9 @@ const Navbar = () => {
     <div>
       <div className={style.navContainer}>
         <div className={style.name}>Welcome, Name</div>
-        <div className={style.button}>Log In</div>
-        <div className={style.button}>Register</div>
-        <div className={style.button}>Log Out</div>
+        <div className={style.button}><Link to="/login">Log In</Link></div>
+        <div className={style.button}><Link to="/register">Register</Link></div>
+        <div className={style.button}><Link to="/">Home</Link></div>
       </div>
     </div>
   );
