@@ -1,6 +1,9 @@
-import GroceryList from "./GroceryList";
-import MainDinnersView from "./MainDinnersView";
-import MainRecipesView from "./MainRecipesView";
+import Home from "./Home";
+
+import Navbar from "./Navbar";
+import AuthLogin from "./AuthLogin";
+import AuthRegister from "./AuthRegister";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const style = {
   mainContainer: `bg-[#CDC2AE] flex flex-col pr-5 pl-8 min-h-screen`,
@@ -9,9 +12,17 @@ const style = {
 function App() {
   return (
     <div className={style.mainContainer}>
-        <MainDinnersView />
-        <MainRecipesView />
-        <GroceryList />
+      
+
+
+      <BrowserRouter>
+      <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/login" element={<AuthLogin />} />
+          <Route path="/register" element={<AuthRegister />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
