@@ -5,6 +5,7 @@ import {
   signOut,
 } from "firebase/auth";
 
+
 import { auth } from "./firebase";
 
 const style = {
@@ -23,12 +24,11 @@ function AuthLogin() {
   const [loginPassword, setLoginPassword] = useState("");
 
   const [user, setUser] = useState({});
+ 
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
-
-
 
   const login = async () => {
     try {
@@ -38,6 +38,7 @@ function AuthLogin() {
         loginPassword
       );
       console.log(user);
+      
     } catch (error) {
       console.log(error.message);
     }
@@ -45,6 +46,7 @@ function AuthLogin() {
 
   const logout = async () => {
     await signOut(auth);
+   
   };
 
   return (
@@ -60,7 +62,7 @@ function AuthLogin() {
         />
         <input
           className={style.textInput}
-          placeholder="Password..."
+          type="password"
           onChange={(event) => {
             setLoginPassword(event.target.value);
           }}
@@ -70,7 +72,9 @@ function AuthLogin() {
           {" "}
           Login
         </button>
-        <div className={style.currentUserContainer}>
+      </div>
+      
+        {user && <div className={style.inputContainer}>
           <h4 className={style.currentUser}>
             {" "}
             Current logged in user: {user?.email}
@@ -80,8 +84,8 @@ function AuthLogin() {
             {" "}
             Sign Out{" "}
           </button>
-        </div>
-      </div>
+        </div>}
+    
     </div>
   );
 }

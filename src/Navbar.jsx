@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
@@ -23,16 +21,26 @@ const Navbar = () => {
     setUser(currentUser);
   });
 
+  const logout = async () => {
+    await signOut(auth);
+  };
+
   return (
     <div>
       <div className={style.navContainer}>
-        <div className={style.name}>Welcome, {user?.email}</div>
-        <div className={style.button}>
-          <Link to="/login">Log In</Link>
-        </div>
-        <div className={style.button}>
+        {user && <div className={style.name}>Welcome, {user?.email}</div>}
+        {user ? (
+          <div className={style.button} onClick={logout}>
+            Log Out
+          </div>
+        ) : (
+          <div className={style.button}>
+            <Link to="/login">Log In</Link>
+          </div>
+        )}
+        {!user && <div className={style.button}>
           <Link to="/register">Register</Link>
-        </div>
+        </div>}
         <div className={style.button}>
           <Link to="/">Home</Link>
         </div>
