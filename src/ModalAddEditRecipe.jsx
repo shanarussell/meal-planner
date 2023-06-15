@@ -10,6 +10,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import useCreateRecipe from "./hooks/useCreateRecipe";
+import useEditRecipe from "./hooks/useEditRecipe";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
@@ -87,12 +88,21 @@ const ModalAddEditRecipe = ({
   // Create Recipe Hook (adds a new recipe)
   const createRecipe = useCreateRecipe({ fullRecipe });
 
+  // Edit Recipe Hook (adds a new recipe)
+  const editRecipe = useEditRecipe({ fullRecipe, selectedRecipe });
 
   //create new recipe and close modal when submit button is pressed
   const handleCreateRecipe = (e) => {
     e.preventDefault(e);
     createRecipe();
     setNewRecipeModal(false);
+  };
+
+  //edit recipe and close modal when submit button is pressed
+  const handleEditRecipe = (e) => {
+    e.preventDefault(e);
+    editRecipe();
+    setViewRecipesModal(false);
   };
 
   //upload image to firebase
@@ -121,19 +131,7 @@ const ModalAddEditRecipe = ({
     });
   };
 
-  //edit recipe in Database
-  const editRecipe = async (event) => {
-    event.preventDefault(event);
-    await updateDoc(doc(db, "recipes", selectedRecipe.id), {
-      recipeName: fullRecipe.recipeName,
-      recipeIngredients: fullRecipe.recipeIngredients,
-      recipeInstructions: fullRecipe.recipeInstructions,
-      recipeNotes: fullRecipe.recipeNotes,
-      isDinner: fullRecipe.isDinner,
-      imagePath: fullRecipe.imagePath,
-    });
-    setViewRecipesModal(false);
-  };
+ 
 
   const closeModal = () => {
     {
@@ -417,7 +415,7 @@ const ModalAddEditRecipe = ({
                   <br />
                   <button
                     className={style.submitButton}
-                    onClick={editMode ? editRecipe : handleCreateRecipe}
+                    onClick={editMode ? handleEditRecipe : handleCreateRecipe}
                   >
                     Submit
                   </button>
