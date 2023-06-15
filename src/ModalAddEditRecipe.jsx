@@ -9,6 +9,7 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
+import useCreateRecipe from "./hooks/useCreateRecipe";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
@@ -83,18 +84,14 @@ const ModalAddEditRecipe = ({
 
   let recipeNotesPlaceholder = "Add Notes with each step separated by a comma";
 
-  // Create Recipe (add)
-  const createRecipe = async (e) => {
-    e.preventDefault(e);
+  // Create Recipe Hook (adds a new recipe)
+  const createRecipe = useCreateRecipe({ fullRecipe });
 
-    await addDoc(collection(db, "recipes"), {
-      recipeName: fullRecipe.recipeName,
-      recipeIngredients: fullRecipe.recipeIngredients,
-      recipeInstructions: fullRecipe.recipeInstructions,
-      recipeNotes: fullRecipe.recipeNotes,
-      isDinner: fullRecipe.isDinner,
-      imagePath: fullRecipe.imagePath,
-    });
+
+  //create new recipe and close modal when submit button is pressed
+  const handleCreateRecipe = (e) => {
+    e.preventDefault(e);
+    createRecipe();
     setNewRecipeModal(false);
   };
 
@@ -420,7 +417,7 @@ const ModalAddEditRecipe = ({
                   <br />
                   <button
                     className={style.submitButton}
-                    onClick={editMode ? editRecipe : createRecipe}
+                    onClick={editMode ? editRecipe : handleCreateRecipe}
                   >
                     Submit
                   </button>
