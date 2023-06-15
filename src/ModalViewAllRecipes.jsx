@@ -1,12 +1,7 @@
 import PropTypes from "prop-types";
 import RecipeSingleView from "./RecipeSingleView";
-import { useState, useEffect } from "react";
-import { db } from "./firebase";
-import {
-  query,
-  collection,
-  onSnapshot,
-} from "firebase/firestore";
+import useRecipes from "./hooks/useRecipes";
+import { useState } from "react";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
@@ -26,29 +21,16 @@ const style = {
 };
 
 const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
-  const [allRecipes, setAllRecipes] = useState([]);
   const [listAll, setListAll] = useState(true);
   const [selectedRecipe, setSelectedRecipe] = useState();
 
-  // Read Recipes from Firebase
-  useEffect(() => {
-    const q = query(collection(db, "recipes"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let allRecipesArray = [];
-      querySnapshot.forEach((item) => {
-        allRecipesArray.push({ ...item.data(), id: item.id });
-      });
-
-      setAllRecipes(allRecipesArray);
-     
-    });
-    return () => unsubscribe();
-  }, []);
+  const { allRecipes } = useRecipes();
+  console.log(allRecipes);
 
   //when a recipe is clicked, the list hides and a single recipe is shown
   const handleClick = (recipe) => {
     setListAll(false);
-   
+
     setSelectedRecipe(recipe);
   };
 
@@ -67,7 +49,6 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
       </div>
     </div>
   ));
-
 
   return (
     <>
