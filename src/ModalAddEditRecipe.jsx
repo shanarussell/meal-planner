@@ -131,23 +131,21 @@ const ModalAddEditRecipe = ({
     });
   };
 
- 
-
   const closeModal = () => {
     {
       editMode ? setViewRecipesModal(false) : setNewRecipeModal(false);
     }
   };
 
-  function pasteIngredientsFromWeb() {
+  function pasteFromWeb(recipeType) {
     return (
       <div>
         <textarea
-          value={fullRecipe.recipeIngredients}
+          value={fullRecipe[recipeType]}
           onChange={(e) =>
             setFullRecipe((prevRecipe) => ({
               ...prevRecipe,
-              recipeIngredients: e.target.value
+              [recipeType]: e.target.value
                 .replace(/-/g, " ")
                 .replace(/•/g, "")
                 .replace(/\u25A2/g, "")
@@ -162,7 +160,7 @@ const ModalAddEditRecipe = ({
           rows={"5"}
           placeholder={
             editMode
-              ? selectedRecipe.recipeIngredients
+              ? selectedRecipe[recipeType]
               : "Paste list from web to be auto-formatted. Removes dashes, bullet points, brackets, boxes, asterisks and urls. Note: you may have to manually remove extra commas to avoid unnecessary line breaks"
           }
         />
@@ -170,78 +168,24 @@ const ModalAddEditRecipe = ({
     );
   }
 
-  function pasteIngredientsManually() {
-    return (
-      <div>
-        <textarea
-          value={fullRecipe.recipeIngredients}
-          onChange={(e) =>
-            setFullRecipe((prevRecipe) => ({
-              ...prevRecipe,
-              recipeIngredients: e.target.value.split(","),
-            }))
-          }
-          className={style.inputTextAreas}
-          rows={"5"}
-          placeholder={
-            editMode
-              ? selectedRecipe.recipeIngredients
-              : "Type in ingredients separated with commas"
-          }
-        />
-      </div>
-    );
-  }
+  
 
-  function pasteInstructionsFromWeb() {
+  function typeManually(recipeType) {
     return (
       <div>
         <textarea
-          value={fullRecipe.recipeInstructions}
+          value={fullRecipe[recipeType]}
           onChange={(e) =>
             setFullRecipe((prevRecipe) => ({
               ...prevRecipe,
-              recipeInstructions: e.target.value
-                .replace(/-/g, " to ")
-                .replace(/•/g, "")
-                .replace(/\u25A2/g, "")
-                .replace(/\*/g, "") //replace *
-                .replace(/http\S+/g, "") // replace for URLs starting with "http"
-                .replace(/\[/g, "") // replace "["
-                .replace(/\]/g, "") // replace "]"
-                .replace(/^\d+\.\s+/gm, "") // remove numbers and period from numbered list
-                .split(/[,.\n]/) // split by commas, periods, and newlines
-                .filter((item) => item.trim() !== ""), // filter out blank items
+              [recipeType]: e.target.value.split(","),
             }))
           }
           className={style.inputTextAreas}
           rows={"5"}
           placeholder={
             editMode
-              ? selectedRecipe.recipeInstructions
-              : "Paste list from web to be auto-formatted. Removes dashes, bullet points, brackets, boxes, asterisks and urls. Note: you may have to manually remove extra commas to avoid unnecessary line breaks."
-          }
-        />
-      </div>
-    );
-  }
-
-  function pasteInstructionsManually() {
-    return (
-      <div>
-        <textarea
-          value={fullRecipe.recipeInstructions}
-          onChange={(e) =>
-            setFullRecipe((prevRecipe) => ({
-              ...prevRecipe,
-              recipeInstructions: e.target.value.split(","),
-            }))
-          }
-          className={style.inputTextAreas}
-          rows={"5"}
-          placeholder={
-            editMode
-              ? selectedRecipe.recipeInstructions
+              ? selectedRecipe[recipeType]
               : "Type in instructions separated with commas"
           }
         />
@@ -315,9 +259,10 @@ const ModalAddEditRecipe = ({
                     Type ingredients manually
                   </button>
 
-                  {formatIngredients === "manual" && pasteIngredientsManually()}
+                  {formatIngredients === "manual" &&
+                    typeManually("recipeIngredients")}
                   {(formatIngredients === "web" || formatIngredients === "") &&
-                    pasteIngredientsFromWeb()}
+                    pasteFromWeb("recipeIngredients")}
 
                   <h3 className={style.heading}>Cooking Instructions:</h3>
                   <button
@@ -349,10 +294,10 @@ const ModalAddEditRecipe = ({
                   </button>
 
                   {formatInstructions === "manual" &&
-                    pasteInstructionsManually()}
+                    typeManually("recipeInstructions")}
                   {(formatInstructions === "web" ||
                     formatInstructions === "") &&
-                    pasteInstructionsFromWeb()}
+                    pasteFromWeb("recipeInstructions")}
                   <h3 className={style.heading}>Notes, links, etc:</h3>
                   <textarea
                     value={fullRecipe.recipeNotes}
