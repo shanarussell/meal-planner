@@ -3,9 +3,7 @@ import { collection, addDoc } from "firebase/firestore";
 
 function useCreateRecipe({ fullRecipe }) {
   // Create Recipe (add)
-  async function createRecipe(e) {
-    
-
+  async function createRecipe() {
     await addDoc(collection(db, "recipes"), {
       recipeName: fullRecipe.recipeName,
       recipeIngredients: fullRecipe.recipeIngredients,
@@ -16,7 +14,7 @@ function useCreateRecipe({ fullRecipe }) {
     });
   }
 
-  return  createRecipe ;
+  return createRecipe;
 }
 
 export default useCreateRecipe;
