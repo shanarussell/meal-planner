@@ -1,7 +1,5 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { db } from "./firebase";
-import { updateDoc, doc } from "firebase/firestore";
 import { storage } from "./firebase";
 import {
   getDownloadURL,
