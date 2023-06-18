@@ -6,7 +6,7 @@ import {
 } from "firebase/auth";
 
 
-import { auth } from "./firebase";
+import { auth } from "../firebase";
 
 const style = {
   mainContainer: `bg-slate-100 flex flex-col rounded shadow p-5 my-5 h-full`,

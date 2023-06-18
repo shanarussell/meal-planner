@@ -2,8 +2,8 @@ import Home from "./Home";
 import { useState } from "react";
 
 import Navbar from "./Navbar";
-import AuthLogin from "./AuthLogin";
-import AuthRegister from "./AuthRegister";
+import AuthLogin from "./authentication/AuthLogin";
+import AuthRegister from "./authentication/AuthRegister";
 import NewUserPage from "./NewUserPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
