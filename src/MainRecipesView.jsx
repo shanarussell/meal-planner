@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ModalViewAllRecipes from "./ModalViewAllRecipes";
 import ModalAddEditRecipe from "./ModalAddEditRecipe";
+import PropTypes from "prop-types";
 
 const style = {
   container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8 w-full`,
@@ -10,7 +11,7 @@ const style = {
   mainButtons: `w-full bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-lg px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none m-2 ease-linear transition-all duration-150`,
 };
 
-const MainRecipesView = () => {
+const MainRecipesView = ({ user }) => {
   const [viewRecipesModal, setViewRecipesModal] = useState(false);
   const [newRecipeModal, setNewRecipeModal] = useState(false);
 
@@ -36,17 +37,25 @@ const MainRecipesView = () => {
       </div>
 
       {viewRecipesModal ? (
-        <ModalViewAllRecipes setViewRecipesModal={setViewRecipesModal} />
+        <ModalViewAllRecipes
+          user={user}
+          setViewRecipesModal={setViewRecipesModal}
+        />
       ) : null}
 
       {newRecipeModal ? (
         <ModalAddEditRecipe
+          user={user}
           setNewRecipeModal={setNewRecipeModal}
           setViewRecipesModal={setViewRecipesModal}
         />
       ) : null}
     </div>
   );
+};
+
+MainRecipesView.propTypes = {
+  user: PropTypes.object,
 };
 
 export default MainRecipesView;

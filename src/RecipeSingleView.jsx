@@ -18,7 +18,6 @@ import {
   AiOutlineCheckSquare,
 } from "react-icons/ai";
 import ModalAddEditRecipe from "./ModalAddEditRecipe";
-import { onAuthStateChanged } from "firebase/auth";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
@@ -48,7 +47,7 @@ const style = {
   editContainer: `flex flex-row`,
 };
 
-const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
+const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal, user }) => {
   const [editMode, setEditMode] = useState(false);
   const [addedToCart, setAddedToCart] = useState([]);
   const [stepFinished, setStepFinished] = useState([]);
@@ -107,14 +106,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   ));
 
   //get userID
-  const [user, setUser] = useState({});
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
 
   const userID = user.uid;
 
@@ -211,6 +203,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
                   <div className={style.recipeAndButtonsContainer}>
                     {editMode ? (
                       <ModalAddEditRecipe
+                        user={user}
                         selectedRecipe={selectedRecipe}
                         editMode={editMode}
                         setViewRecipesModal={setViewRecipesModal}
@@ -258,6 +251,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
 RecipeSingleView.propTypes = {
   selectedRecipe: PropTypes.object,
   setViewRecipesModal: PropTypes.func,
+  user: PropTypes.object,
 };
 
 export default RecipeSingleView;

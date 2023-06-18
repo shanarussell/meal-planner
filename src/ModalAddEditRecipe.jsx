@@ -42,6 +42,7 @@ const ModalAddEditRecipe = ({
   selectedRecipe,
   editMode,
   setViewRecipesModal,
+  user,
 }) => {
   //launches from MainRecipesView
   //setNewRecipe prop is a boolean that sets whether the modal is open or not
@@ -84,10 +85,10 @@ const ModalAddEditRecipe = ({
   let recipeNotesPlaceholder = "Add Notes with each step separated by a comma";
 
   // Create Recipe Hook (adds a new recipe)
-  const createRecipe = useCreateRecipe({ fullRecipe });
+  const createRecipe = useCreateRecipe({ fullRecipe, user });
 
   // Edit Recipe Hook (adds a new recipe)
-  const editRecipe = useEditRecipe({ fullRecipe, selectedRecipe });
+  const editRecipe = useEditRecipe({ fullRecipe, selectedRecipe, user });
 
   //create new recipe and close modal when submit button is pressed
   const handleCreateRecipe = (e) => {
@@ -378,6 +379,7 @@ ModalAddEditRecipe.propTypes = {
   setViewRecipesModal: PropTypes.func,
   selectedRecipe: PropTypes.object,
   editMode: PropTypes.bool,
+  user: PropTypes.object,
 };
 
 export default ModalAddEditRecipe;

@@ -1,9 +1,7 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import {
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 import { auth } from "./firebase";
 
@@ -11,18 +9,9 @@ const style = {
   navContainer: `bg-[#116A7B] flex flex-row rounded shadow p-3 mt-5 text-white justify-end`,
   name: `mr-2`,
   button: `bg-slate-100 rounded mx-3 text-[#116A7B] px-3`,
-  
 };
 
-const Navbar = () => {
-
-  
-  const [user, setUser] = useState({});
-
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
-
+const Navbar = ({ user }) => {
   const logout = async () => {
     await signOut(auth);
   };
@@ -40,15 +29,21 @@ const Navbar = () => {
             <Link to="/login">Log In</Link>
           </div>
         )}
-        {!user && <div className={style.button}>
-          <Link to="/register">Register</Link>
-        </div>}
+        {!user && (
+          <div className={style.button}>
+            <Link to="/register">Register</Link>
+          </div>
+        )}
         <div className={style.button}>
           <Link to="/">Home</Link>
         </div>
       </div>
     </div>
   );
+};
+
+Navbar.propTypes = {
+  user: PropTypes.object,
 };
 
 export default Navbar;

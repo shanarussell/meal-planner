@@ -4,6 +4,7 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
+import PropTypes from "prop-types";
 
 
 import { auth } from "../firebase";
@@ -19,12 +20,10 @@ const style = {
   signOutButton: `bg-[#116A7B] ml-3 text-white active:bg-pink-600 font-bold uppercase text-xs mt-2 px-3 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
 };
 
-function AuthLogin() {
+function AuthLogin({user, setUser}) {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  const [user, setUser] = useState({});
- 
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
@@ -38,7 +37,9 @@ function AuthLogin() {
         loginPassword
       );
       console.log(user);
-      
+      // Clear the input fields after successful login
+      setLoginEmail("");
+      setLoginPassword("");
     } catch (error) {
       console.log(error.message);
     }
@@ -46,7 +47,6 @@ function AuthLogin() {
 
   const logout = async () => {
     await signOut(auth);
-   
   };
 
   return (
@@ -73,8 +73,9 @@ function AuthLogin() {
           Login
         </button>
       </div>
-      
-        {user && <div className={style.inputContainer}>
+
+      {user && (
+        <div className={style.inputContainer}>
           <h4 className={style.currentUser}>
             {" "}
             Current logged in user: {user?.email}
@@ -84,10 +85,15 @@ function AuthLogin() {
             {" "}
             Sign Out{" "}
           </button>
-        </div>}
-    
+        </div>
+      )}
     </div>
   );
+}
+
+AuthLogin.propTypes = {
+  user: PropTypes.object,
+  setUser: PropTypes.func,
 }
 
 export default AuthLogin;

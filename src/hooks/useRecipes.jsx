@@ -3,15 +3,8 @@ import { query, collection, onSnapshot } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-function useRecipes() {
-  const [user, setUser] = useState({});
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
+function useRecipes({user}) {
+  
 
   const userID = user.uid;
 

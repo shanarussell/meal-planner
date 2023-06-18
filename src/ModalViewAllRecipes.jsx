@@ -20,11 +20,11 @@ const style = {
   recipeTitle: `text-md font-bold text-left text-white`,
 };
 
-const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
+const ModalViewAllRecipes = ({ setViewRecipesModal, user }) => {
   const [listAll, setListAll] = useState(true);
   const [selectedRecipe, setSelectedRecipe] = useState();
 
-  const { allRecipes } = useRecipes();
+  const { allRecipes } = useRecipes({user});
   console.log(allRecipes);
 
   //when a recipe is clicked, the list hides and a single recipe is shown
@@ -83,6 +83,7 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
         </>
       ) : (
         <RecipeSingleView
+          user={user}
           selectedRecipe={selectedRecipe}
           setViewRecipesModal={setViewRecipesModal}
         />
@@ -94,6 +95,7 @@ const ModalViewAllRecipes = ({ setViewRecipesModal }) => {
 
 ModalViewAllRecipes.propTypes = {
   setViewRecipesModal: PropTypes.func,
+  user: PropTypes.object,
 };
 
 export default ModalViewAllRecipes;

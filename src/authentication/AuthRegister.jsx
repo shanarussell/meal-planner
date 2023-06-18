@@ -4,6 +4,8 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import PropTypes from "prop-types";
+
 
 const style = {
   mainContainer: `bg-slate-100 flex flex-col rounded shadow p-5 my-5 h-full`,
@@ -13,11 +15,11 @@ const style = {
   submitButton: `bg-[#116A7B] text-white active:bg-pink-600 font-bold uppercase text-sm mt-2 px-6 py-3 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
 };
 
-function AuthRegister() {
+function AuthRegister({setUser}) {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
 
-  const [user, setUser] = useState({});
+
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
@@ -31,6 +33,8 @@ function AuthRegister() {
         registerPassword
       );
       console.log(user);
+      setRegisterEmail("");
+      setRegisterPassword("");
     } catch (error) {
       console.log(error.message);
     }
@@ -63,6 +67,10 @@ function AuthRegister() {
       </div>
     </div>
   );
+}
+
+AuthRegister.propTypes = {
+  setUser: PropTypes.func,
 }
 
 export default AuthRegister;

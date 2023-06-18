@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
-import { db, auth } from "./firebase";
+import { db } from "./firebase";
 import {
   query,
   collection,
-  onSnapshot,
   updateDoc,
   doc,
   getDocs,
 } from "firebase/firestore";
 import { FaRegTrashAlt } from "react-icons/fa";
 import RecipeSingleView from "./RecipeSingleView";
-import { onAuthStateChanged } from "firebase/auth";
+import PropTypes from "prop-types";
 
 const style = {
   container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8 w-full`,
@@ -24,7 +23,7 @@ const style = {
 };
 
 
-const MainDinnersView = () => {
+const MainDinnersView = ({user}) => {
   //this component displays the weekly dinners section from the database
   //it's looking for isDinner to be set to true
   //isDinner can be set from the new recipe and single recipe views
@@ -35,36 +34,31 @@ const MainDinnersView = () => {
   const [viewRecipesModal, setViewRecipesModal] = useState(false);
 
   //get userID
-  const [user, setUser] = useState({});
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
 
   const userID = user.uid;
 
-  // Read all recipes from DB and keep those where isDinner=true
-  // Read selected dinners from DB based on userID
-  const fetchSelectedDinners = async () => {
-    const q = query(collection(db, `${userID}`));
-    const querySnapshot = await getDocs(q);
-
-    let selectedRecipesArr = [];
-
-    querySnapshot.forEach((item) => {
-      const data = { ...item.data(), id: item.id };
-      if (data.isDinner === true) {
-        selectedRecipesArr.push(data);
-      }
-    });
-
-    setSelectedDinners(selectedRecipesArr);
-  };
+  
 
   useEffect(() => {
+    // Read all recipes from DB and keep those where isDinner=true
+    // Read selected dinners from DB based on userID
+    const fetchSelectedDinners = async () => {
+      const q = query(collection(db, `${userID}`));
+      const querySnapshot = await getDocs(q);
+
+      let selectedRecipesArr = [];
+
+      querySnapshot.forEach((item) => {
+        const data = { ...item.data(), id: item.id };
+        if (data.isDinner === true) {
+          selectedRecipesArr.push(data);
+        }
+      });
+
+      setSelectedDinners(selectedRecipesArr);
+    };
+
+
     if (userID) {
       fetchSelectedDinners();
     }
@@ -91,6 +85,7 @@ const MainDinnersView = () => {
     <>
       {viewRecipesModal ? (
         <RecipeSingleView
+          user = {user}
           selectedRecipe={selectedRecipe}
           setViewRecipesModal={setViewRecipesModal}
         />
@@ -120,6 +115,10 @@ const MainDinnersView = () => {
       )}
     </>
   );
+};
+
+MainDinnersView.propTypes = {
+  user: PropTypes.object,
 };
 
 export default MainDinnersView;

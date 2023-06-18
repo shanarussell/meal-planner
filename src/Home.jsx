@@ -1,16 +1,21 @@
-import React from 'react'
+
 import MainDinnersView from './MainDinnersView';
 import MainRecipesView from './MainRecipesView';
 import GroceryList from './GroceryList';
+import PropTypes from "prop-types";
 
-function Home() {
+function Home({user}) {
   return (
     <div>
-      <MainDinnersView />
-      <MainRecipesView />
-      <GroceryList />
+      <MainDinnersView user={user} />
+      <MainRecipesView user={user} />
+      <GroceryList user={user} />
     </div>
   );
+}
+
+Home.propTypes = {
+  user: PropTypes.object,
 }
 
 export default Home

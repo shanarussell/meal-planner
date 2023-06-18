@@ -1,12 +1,12 @@
 import Home from "./Home";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Navbar from "./Navbar";
 import AuthLogin from "./authentication/AuthLogin";
 import AuthRegister from "./authentication/AuthRegister";
 import NewUserPage from "./NewUserPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 import { auth } from "./firebase";
 
@@ -15,20 +15,43 @@ const style = {
 };
 
 function App() {
+
+  //get current user (and pass this through props)
   const [user, setUser] = useState({});
 
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // const userID = user.uid;
+
+  // //log out
+  // const logout = async () => {
+  //   await signOut(auth);
+  // };
+
+
   return (
     <div className={style.mainContainer}>
       <BrowserRouter>
-        <Navbar />
+        <Navbar user={user} />
         <Routes>
-          <Route path="/" element={user ? <Home /> : <NewUserPage />} />
+          <Route
+            path="/"
+            element={user ? <Home user={user} /> : <NewUserPage />}
+          />
 
-          <Route path="/login" element={<AuthLogin />} />
-          <Route path="/register" element={<AuthRegister />} />
+          <Route
+            path="/login"
+            element={<AuthLogin user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/register"
+            element={<AuthRegister user={user} setUser={setUser} />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

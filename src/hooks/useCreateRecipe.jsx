@@ -1,14 +1,8 @@
-import { db, auth } from "../firebase";
+import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
-import { useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
 
-function useCreateRecipe({ fullRecipe }) {
-  const [user, setUser] = useState({});
+function useCreateRecipe({ fullRecipe, user }) {
 
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
 
   const userID = user.uid;
 

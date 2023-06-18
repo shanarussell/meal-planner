@@ -1,16 +1,9 @@
-import { db, auth} from "../firebase";
+import { db} from "../firebase";
 import { updateDoc, doc } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { useState } from "react";
 
 
-function useEditRecipe({fullRecipe, selectedRecipe}) {
+function useEditRecipe({fullRecipe, selectedRecipe, user}) {
 
-  const [user, setUser] = useState({});
-
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
 
   const userID = user.uid;
 
