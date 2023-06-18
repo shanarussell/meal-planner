@@ -15,6 +15,8 @@ const style = {
 };
 
 const Navbar = () => {
+
+  
   const [user, setUser] = useState({});
 
   onAuthStateChanged(auth, (currentUser) => {

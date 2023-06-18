@@ -49,6 +49,7 @@ function AuthRegister() {
         />
         <input
           className={style.textInput}
+          type="password"
           placeholder="Password..."
           onChange={(event) => {
             setRegisterPassword(event.target.value);

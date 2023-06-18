@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
-import { db } from "./firebase";
+import { db, auth } from "./firebase";
 import {
   query,
   collection,
   onSnapshot,
   updateDoc,
   doc,
+  getDocs,
 } from "firebase/firestore";
 import { FaRegTrashAlt } from "react-icons/fa";
 import RecipeSingleView from "./RecipeSingleView";
+import { onAuthStateChanged } from "firebase/auth";
 
 const style = {
   container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8 w-full`,
@@ -32,33 +34,46 @@ const MainDinnersView = () => {
   const [selectedRecipe, setSelectedRecipe] = useState();
   const [viewRecipesModal, setViewRecipesModal] = useState(false);
 
+  //get userID
+  const [user, setUser] = useState({});
 
-  // Read all recipes from DB and keep those where isDinner=true
   useEffect(() => {
-    const q = query(collection(db, "recipes"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let allRecipesArr = [];
-      let selectedRecipesArr = [];
-
-      querySnapshot.forEach((item) => {
-        allRecipesArr.push({ ...item.data(), id: item.id });
-      });
-
-      allRecipesArr.map((item) => {
-        if (item.isDinner === true) {
-          selectedRecipesArr.push({ ...item, id: item.id });
-        }
-
-        setSelectedDinners(selectedRecipesArr);
-      });
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
     });
     return () => unsubscribe();
   }, []);
 
+  const userID = user.uid;
+
+  // Read all recipes from DB and keep those where isDinner=true
+  // Read selected dinners from DB based on userID
+  const fetchSelectedDinners = async () => {
+    const q = query(collection(db, `${userID}`));
+    const querySnapshot = await getDocs(q);
+
+    let selectedRecipesArr = [];
+
+    querySnapshot.forEach((item) => {
+      const data = { ...item.data(), id: item.id };
+      if (data.isDinner === true) {
+        selectedRecipesArr.push(data);
+      }
+    });
+
+    setSelectedDinners(selectedRecipesArr);
+  };
+
+  useEffect(() => {
+    if (userID) {
+      fetchSelectedDinners();
+    }
+  }, [userID]);
+
   //show a single recipe when clicked
-  function handleRecipeClick (item){
-    setSelectedRecipe(item)
-    setViewRecipesModal(true)
+  function handleRecipeClick(item) {
+    setSelectedRecipe(item);
+    setViewRecipesModal(true);
   }
 
   //<RecipeSingleView selectedRecipe={item} setViewRecipesModal={true}/>
@@ -67,7 +82,7 @@ const MainDinnersView = () => {
 
   const handleTrashClick = async (e, item) => {
     e.stopPropagation();
-    await updateDoc(doc(db, "recipes", item.id), {
+    await updateDoc(doc(db, `${userID}`, item.id), {
       isDinner: !item.isDinner,
     });
   };
@@ -75,7 +90,10 @@ const MainDinnersView = () => {
   return (
     <>
       {viewRecipesModal ? (
-        <RecipeSingleView selectedRecipe={selectedRecipe} setViewRecipesModal={setViewRecipesModal} />
+        <RecipeSingleView
+          selectedRecipe={selectedRecipe}
+          setViewRecipesModal={setViewRecipesModal}
+        />
       ) : (
         <div className={style.container}>
           <h3 className={style.heading}>Weekly Dinners</h3>

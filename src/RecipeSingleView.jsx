@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { db } from "./firebase";
+import { db, auth } from "./firebase";
 import {
   query,
   collection,
@@ -18,6 +18,7 @@ import {
   AiOutlineCheckSquare,
 } from "react-icons/ai";
 import ModalAddEditRecipe from "./ModalAddEditRecipe";
+import { onAuthStateChanged } from "firebase/auth";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
@@ -105,10 +106,22 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
     </div>
   ));
 
+  //get userID
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const userID = user.uid;
+
   // add to category (refactor these 3 into 1 later)
 
   const addToDinners = async (selectedRecipe) => {
-    await updateDoc(doc(db, "recipes", selectedRecipe.id), {
+    await updateDoc(doc(db, `${userID}`, selectedRecipe.id), {
       isDinner: true,
     });
   };
@@ -122,7 +135,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
   };
 
   const deleteRecipe = async (selectedRecipe) => {
-    await deleteDoc(doc(db, "recipes", selectedRecipe.id));
+    await deleteDoc(doc(db, `${userID}`, selectedRecipe.id));
     setViewRecipesModal(false);
   };
 
@@ -204,11 +217,10 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal }) => {
                       />
                     ) : (
                       <div className={style.recipeContainer}>
-                        
-                          <div className={style.recipeTitle}>
-                            {selectedRecipe.recipeName}
-                          </div>
-                        
+                        <div className={style.recipeTitle}>
+                          {selectedRecipe.recipeName}
+                        </div>
+
                         <div className={style.imageContainer}>
                           <img
                             className={style.image}

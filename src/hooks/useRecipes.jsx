@@ -1,25 +1,37 @@
 import { useState, useEffect } from "react";
-import { db } from "../firebase";
 import { query, collection, onSnapshot } from "firebase/firestore";
+import { db, auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 function useRecipes() {
-  // initialize state
-  const [allRecipes, setAllRecipes] = useState([]);
-  // create any functions we need for modifying the state
-  // Read Recipes from Firebase
-  useEffect(() => {
-    const q = query(collection(db, "recipes"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let allRecipesArray = [];
-      querySnapshot.forEach((item) => {
-        allRecipesArray.push({ ...item.data(), id: item.id });
-      });
+  const [user, setUser] = useState({});
 
-      setAllRecipes(allRecipesArray);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
     });
     return () => unsubscribe();
   }, []);
-  // return whatever we want another component to have access to (count, increment)
+
+  const userID = user.uid;
+
+  const [allRecipes, setAllRecipes] = useState([]);
+
+  useEffect(() => {
+    if (userID) {
+      const q = query(collection(db, `${userID}`));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let allRecipesArray = [];
+        querySnapshot.forEach((item) => {
+          allRecipesArray.push({ ...item.data(), id: item.id });
+        });
+
+        setAllRecipes(allRecipesArray);
+      });
+
+      return () => unsubscribe();
+    }
+  }, [userID]);
 
   return { allRecipes };
 }
