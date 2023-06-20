@@ -7,15 +7,16 @@ const style = {
   heading: `text-3xl font-bold text-center text-[#116A7B] p-2 my-4 w-full`,
   subhead: `text-2xl font-bold text-[#116A7B] ml-1`,
   subheadTryIt: `text-2xl font-bold text-[#116A7B] ml-1 text-center`,
-  text: `text-lg text-left text-gray-800 p-2 w-full`,
-  centeredText: `text-lg text-center text-gray-800 p-2 w-full`,
+  text: `text-sm text-left text-gray-800 p-2 w-full`,
+  centeredText: `text-sm text-center text-gray-800 p-2 w-full`,
   button: `bg-[#116A7B] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
-  imageContainer: `w-1/2`,
+  imageContainer: `w-2/3 `,
   mainContainer: `flex flex-col`,
-  sectionContainer: `w-full bg-slate-100 rounded-lg p-3 my-5 flex flex-row`,
+  sectionContainer: `w-full bg-slate-100 rounded-lg p-3 my-5 flex lg:flex-row lg:items-top md:flex-col md:items-center sm:flex-col sm:items-center h-full  justify-center`,
   plainJaneSectionContainer: `w-full bg-slate-100 rounded-lg p-3 my-5 flex flex-col`,
-  textContainer: `mt-3 p-5`,
-  listStyle: `list-disc ml-10 mt-3`,
+  textContainer: `lg:px-5 md:px-3 md:py-3`,
+  listStyle: `text-sm text-left text-gray-800 list-disc ml-10 mt-3`,
+  textDone: `text-sm text-left text-gray-800 line-through`,
 };
 
 function NewUserPage() {
@@ -37,39 +38,26 @@ function NewUserPage() {
             </p>
             <ul className={style.listStyle}>
               <li>Keep a database of recipes that I use often</li>
-              <li>
-                Have an easy way to add recipes to the database whether they are
-                copied from web or manually typed
-              </li>
 
               <li>
                 Keep a list of 4-7 dinners that I want to cook for the current
                 week
               </li>
               <li>
-                Have an easy way to add to the weekly dinner list directly from
-                the recipe
+                Have an easy way to add or remove recipes from the weekly dinner
+                list
               </li>
-              <li>
-                Have an easy way to remove dinners from weekly dinner list after
-                cooking it
-              </li>
+
               <li>
                 Have a single recipe view that is clean and easy to view on a
-                mobile screen
+                mobile screen, marking off completed steps
               </li>
-              <li>
-                The single recipe view must also have a way to mark off steps
-                that are already completed for easily finding my place
-              </li>
+
               <li>
                 Keep a grocery list where items can be manually added or added
                 directly from the recipe view
               </li>
-              <li>
-                Have the ability to erase single items from grocery list or
-                delete all items at once
-              </li>
+
               <li>
                 Add user authentication so multiple users can use the same web
                 app and database
@@ -81,7 +69,8 @@ function NewUserPage() {
           <div>
             <h2 className={style.subheadTryIt}>Try it out yourself</h2>
             <p className={style.centeredText}>
-              Create your own account or log in with these test credentials:
+              Create your own account or log in with these test credentials:{" "}
+              <br />
               username: testuser@test.com password: 123456
             </p>
           </div>
@@ -92,21 +81,21 @@ function NewUserPage() {
             <p className={style.text}>
               I also created this meal planner to practice my software
               development skills in React. This project uses:
-              <ul className={style.listStyle}>
-                <li>ReactJS</li>
-                <li>Firestore Database</li>
-                <li>Firebase Authentication</li>
-                <li>Tailwind CSS</li>
-                <li>Vite</li>
-                <li>Hosted with Firebase</li>
-              </ul>
-              <p className={style.text}>
-                You can view the Github repo here:
-                <br />
-                <a href="https://github.com/shanarussell/meal-planner">
-                  github.com/shanarussell/meal-planner
-                </a>
-              </p>
+            </p>
+            <ul className={style.listStyle}>
+              <li>ReactJS</li>
+              <li>Firestore Database</li>
+              <li>Firebase Authentication</li>
+              <li>Tailwind CSS</li>
+              <li>Vite</li>
+              <li>Hosted with Firebase</li>
+            </ul>
+            <p className={style.text}>
+              You can view the Github repo here:
+              <br />
+              <a href="https://github.com/shanarussell/meal-planner">
+                github.com/shanarussell/meal-planner
+              </a>
             </p>
           </div>
           <div className={style.imageContainer}>
@@ -137,7 +126,7 @@ function NewUserPage() {
               </li>
               <li>Add a print button, maybe</li>
               <li>Add pagination to the recipe view</li>
-              <li>
+              <li className={style.textDone}>
                 Remove need to refresh page to see changes to weely dinners
               </li>
               <li>
