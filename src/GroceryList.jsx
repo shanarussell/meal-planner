@@ -26,7 +26,7 @@ const style = {
   count: `text-center p-2`,
 };
 
-function GroceryList() {
+function GroceryList({user}) {
   const [groceryItems, setgroceryItems] = useState([]);
   const [input, setInput] = useState("");
 
@@ -37,7 +37,7 @@ function GroceryList() {
       alert("Please enter a valid grocery item");
       return;
     }
-    await addDoc(collection(db, "grocery-item"), {
+    await addDoc(collection(db, `list${user}`), {
       groceryItem: input,
     });
     setInput("");
@@ -45,7 +45,7 @@ function GroceryList() {
 
   // Read Grocery Item from Firebase
   useEffect(() => {
-    const q = query(collection(db, "grocery-item"));
+    const q = query(collection(db, `list${user}`));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let groceriesArr = [];
       querySnapshot.forEach((item) => {
@@ -58,12 +58,12 @@ function GroceryList() {
 
   // Delete Grocery Item
   const deleteGroceryItem = async (id) => {
-    await deleteDoc(doc(db, "grocery-item", id));
+    await deleteDoc(doc(db, `list${user}`, id));
   };
 
   // Delete All Grocery Items
   const deleteAllGroceryItems = async () => {
-    const groceryCollectionRef = collection(db, "grocery-item");
+    const groceryCollectionRef = collection(db, `list${user}`);
     const querySnapshot = await getDocs(groceryCollectionRef);
 
     querySnapshot.forEach((doc) => {

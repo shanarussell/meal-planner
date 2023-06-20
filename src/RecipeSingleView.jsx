@@ -135,7 +135,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal, user }) => {
   const addSingleToGroceryList = async (index, item) => {
     // Query the collection to check if the item already exists
     const querySnapshot = await getDocs(
-      query(collection(db, "grocery-item"), where("groceryItem", "==", item))
+      query(collection(db, `list${user}`), where("groceryItem", "==", item))
     );
 
     // If the item already exists, don't add it again
@@ -145,7 +145,7 @@ const RecipeSingleView = ({ selectedRecipe, setViewRecipesModal, user }) => {
     }
 
     // Add the item to the database if it doesn't exist
-    await addDoc(collection(db, "grocery-item"), {
+    await addDoc(collection(db, `list${user}`), {
       groceryItem: item,
     });
     setAddedToCart((prevAdded) => [...prevAdded, index]);
