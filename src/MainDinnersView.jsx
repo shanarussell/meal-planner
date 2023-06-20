@@ -5,7 +5,7 @@ import {
   collection,
   updateDoc,
   doc,
-  getDocs,
+  getDocs, onSnapshot,
 } from "firebase/firestore";
 import { FaRegTrashAlt } from "react-icons/fa";
 import RecipeSingleView from "./RecipeSingleView";
@@ -58,10 +58,18 @@ const MainDinnersView = ({user}) => {
       setSelectedDinners(selectedRecipesArr);
     };
 
-
     if (userID) {
       fetchSelectedDinners();
     }
+
+    // listen for changes in the selected dinners collection
+    // this allows the section to automatically refresh when a change is made
+    const unsubscribe = onSnapshot(collection(db, `${userID}`), () => {
+      fetchSelectedDinners();
+    });
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
   }, [userID]);
 
   //show a single recipe when clicked
@@ -69,8 +77,6 @@ const MainDinnersView = ({user}) => {
     setSelectedRecipe(item);
     setViewRecipesModal(true);
   }
-
-  //<RecipeSingleView selectedRecipe={item} setViewRecipesModal={true}/>
 
   //handle trash click (remove from list by changing isDinner)
 
