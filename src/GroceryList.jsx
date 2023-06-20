@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { AiOutlinePlus, AiOutlineCloseSquare } from "react-icons/ai";
 import { db } from "./firebase";
 import {
@@ -37,7 +38,7 @@ function GroceryList({user}) {
       alert("Please enter a valid grocery item");
       return;
     }
-    await addDoc(collection(db, `list${user}`), {
+    await addDoc(collection(db, `list${user.uid}`), {
       groceryItem: input,
     });
     setInput("");
@@ -45,7 +46,7 @@ function GroceryList({user}) {
 
   // Read Grocery Item from Firebase
   useEffect(() => {
-    const q = query(collection(db, `list${user}`));
+    const q = query(collection(db, `list${user.uid}`));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       let groceriesArr = [];
       querySnapshot.forEach((item) => {
@@ -54,16 +55,16 @@ function GroceryList({user}) {
       setgroceryItems(groceriesArr);
     });
     return () => unsubscribe();
-  }, []);
+  }, [user.uid]);
 
   // Delete Grocery Item
   const deleteGroceryItem = async (id) => {
-    await deleteDoc(doc(db, `list${user}`, id));
+    await deleteDoc(doc(db, `list${user.uid}`, id));
   };
 
   // Delete All Grocery Items
   const deleteAllGroceryItems = async () => {
-    const groceryCollectionRef = collection(db, `list${user}`);
+    const groceryCollectionRef = collection(db, `list${user.uid}`);
     const querySnapshot = await getDocs(groceryCollectionRef);
 
     querySnapshot.forEach((doc) => {
@@ -116,5 +117,9 @@ function GroceryList({user}) {
     </div>
   );
 }
+
+GroceryList.propTypes = {
+  user: PropTypes.object,
+};
 
 export default GroceryList;
