@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
-import { db, auth } from "./firebase";
+import { db } from "./firebase";
 import {
   query,
   collection,
