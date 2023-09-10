@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import AuthLogin from "./authentication/AuthLogin";
 import AuthRegister from "./authentication/AuthRegister";
+import ForgotPassword from "./authentication/ForgotPassword";
 import NewUserPage from "./NewUserPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+
 
 import { auth } from "./firebase";
 
@@ -52,6 +54,11 @@ function App() {
             path="/register"
             element={<AuthRegister user={user} setUser={setUser} />}
           />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword />}
+          />
+          
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate, Link } from 'react-router-dom';
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
 import PropTypes from "prop-types";
+
 
 
 import { auth } from "../firebase";
@@ -18,6 +20,7 @@ const style = {
   currentUserContainer: `p-1 flex flex-row align-middle h-3/5`,
   currentUser: `text-[#116A7B] mb-1 font-bold text-md text-center mt-3`,
   signOutButton: `bg-[#116A7B] ml-3 text-white active:bg-pink-600 font-bold uppercase text-xs mt-2 px-3 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150`,
+  passwordLink: `text-sm font-bold text-center mt-3`
 };
 
 function AuthLogin({user, setUser}) {
@@ -49,13 +52,15 @@ function AuthLogin({user, setUser}) {
     await signOut(auth);
   };
 
+ 
+
   return (
     <div className={style.mainContainer}>
       <div className={style.inputContainer}>
         <h3 className={style.heading}> Log In </h3>
         <input
           className={style.textInput}
-          placeholder="Email..."
+          placeholder="Email address"
           onChange={(event) => {
             setLoginEmail(event.target.value);
           }}
@@ -72,6 +77,7 @@ function AuthLogin({user, setUser}) {
           {" "}
           Login
         </button>
+        <div className={style.passwordLink}><Link to="/forgot-password">Forgot Password?</Link></div>
       </div>
 
       {user && (

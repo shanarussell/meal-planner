@@ -46,7 +46,7 @@ function AuthRegister({setUser}) {
         <h3 className={style.heading}> Register User </h3>
         <input
           className={style.textInput}
-          placeholder="Email..."
+          placeholder="Email Addressç"
           onChange={(event) => {
             setRegisterEmail(event.target.value);
           }}

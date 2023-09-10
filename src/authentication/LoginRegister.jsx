@@ -55,7 +55,7 @@ function App() {
       <div>
         <h3> Register User </h3>
         <input
-          placeholder="Email..."
+          placeholder="Email address"
           onChange={(event) => {
             setRegisterEmail(event.target.value);
           }}
@@ -73,7 +73,7 @@ function App() {
       <div>
         <h3> Login </h3>
         <input
-          placeholder="Email..."
+          placeholder="Email Address"
           onChange={(event) => {
             setLoginEmail(event.target.value);
           }}

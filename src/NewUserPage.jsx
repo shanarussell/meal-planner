@@ -7,16 +7,16 @@ const style = {
   heading: `text-3xl font-bold text-center text-[#116A7B] p-2 my-4 w-full`,
   subhead: `text-2xl font-bold text-[#116A7B] ml-1`,
   subheadTryIt: `text-2xl font-bold text-[#116A7B] ml-1 text-center`,
-  text: `text-sm text-left text-gray-800 p-2 w-full`,
-  centeredText: `text-sm text-center text-gray-800 p-2 w-full`,
+  text: `text-med text-left text-gray-800 p-2 w-full`,
+  centeredText: `text-med text-center text-gray-800 p-2 w-full`,
   button: `bg-[#116A7B] text-white m-3 py-3 px-6 rounded shadow font-bold uppercase text-sm`,
-  imageContainer: `w-2/3 `,
+  imageContainer: `w-1/2`,
   mainContainer: `flex flex-col`,
   sectionContainer: `w-full bg-slate-100 rounded-lg p-3 my-5 flex lg:flex-row lg:items-top md:flex-col md:items-center sm:flex-col sm:items-center h-full  justify-center`,
   plainJaneSectionContainer: `w-full bg-slate-100 rounded-lg p-3 my-5 flex flex-col`,
   textContainer: `lg:px-5 md:px-3 md:py-3`,
-  listStyle: `text-sm text-left text-gray-800 list-disc ml-10 mt-3`,
-  textDone: `text-sm text-left text-gray-800 line-through`,
+  listStyle: `text-med text-left text-gray-800 list-disc ml-10 mt-3`,
+  textDone: `text-med text-left text-gray-800 line-through`,
 };
 
 function NewUserPage() {
@@ -112,6 +112,7 @@ function NewUserPage() {
             </h2>
             <ul className={style.listStyle}>
               <li>Ability to search recipes</li>
+              <li>Ability to tag recipes</li>
               <li>
                 Improve the image upload button behavior when adding or editing
                 a recipe
@@ -128,6 +129,9 @@ function NewUserPage() {
               <li>Add pagination to the recipe view</li>
               <li className={style.textDone}>
                 Remove need to refresh page to see changes to weely dinners
+              </li>
+              <li className={style.textDone}>
+                Password Reset
               </li>
               <li>
                 Add ability to just hit return when logging in instead of
