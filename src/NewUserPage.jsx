@@ -133,6 +133,7 @@ function NewUserPage() {
               <li className={style.textDone}>
                 Password Reset
               </li>
+              <li>Add a custom password reset page instead of the default firebase page</li>
               <li>
                 Add ability to just hit return when logging in instead of
                 pushing the login button

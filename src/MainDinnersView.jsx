@@ -12,7 +12,7 @@ import RecipeSingleView from "./RecipeSingleView";
 import PropTypes from "prop-types";
 
 const style = {
-  container: `bg-slate-100 rounded-md shadow-xl p-4 mr-8 mt-8 w-full`,
+  container: `bg-slate-100 rounded-md shadow-xl p-4 sm: p-0 mr-8 sm:mr-0 mt-8 sm:mt-0 w-full`,
   heading: `text-3xl font-bold text-center text-gray-800 p-2`,
   dinnerGrid: `flex flex-wrap sm:flex-col lg:flex-row lg:justify-around sm:place-items-center md:place-items-center `,
   singleRecipeContainer: `h-64 w-64 bg-[#116A7B] m-3 py-3 px-6 rounded shadow relative`, // Added 'relative' positioning

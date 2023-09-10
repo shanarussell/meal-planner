@@ -5,19 +5,19 @@ import { useState } from "react";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
-  modalSize: `relative w-auto mx-20 w-full max-h-full overflow-auto`,
+  modalSize: `relative w-auto mx-20 sm:mx-5 w-full max-h-full overflow-auto`,
   modalOuterContainer: `rounded-lg shadow-lg flex flex-col w-full bg-white outline-none`,
   modalHeader: `flex items-start justify-between p-5 border-b rounded-t`,
   modalTitle: `text-3xl font-semibold`,
   modalXButton: `p-1 ml-auto bg-transparent border-0 text-[#DF2E38] float-right text-3xl leading-none font-semibold outline-none`,
-  modalTextContainer: `relative p-6`,
-  greyContainer: `flex-col bg-slate-100 w-full rounded-md shadow-xl p-4`,
-  recipeContainer: `flex flex-row basis-full flex-wrap justify-stretch`,
-  singleRecipeContainer: `h-56 w-64 bg-[#116A7B] m-3 py-3 px-6 rounded shadow`,
-  singleRecipeImageContainer: `box-border h-36 mt-2 mb-2`,
+  modalTextContainer: `relative p-6 sm:p-1`,
+  greyContainer: `flex-col bg-slate-100 w-full rounded-md shadow-xl p-4 sm:p-1`,
+  recipeContainer: `flex flex-row basis-full flex-wrap justify-center`,
+  singleRecipeContainer: `h-56 sm:h-48 w-64 bg-[#116A7B] m-3 py-3 px-6 rounded shadow`,
+  singleRecipeImageContainer: `box-border h-36 sm:h-28 mt-2 mb-2`,
   singleRecipeTextContainer: ``,
   thumbnailImage: `h-full w-full object-cover`,
-  recipeTitle: `text-md font-bold text-left text-white`,
+  recipeTitle: `text-md sm:text-sm font-bold text-left text-white`,
 };
 
 const ModalViewAllRecipes = ({ setViewRecipesModal, user }) => {
