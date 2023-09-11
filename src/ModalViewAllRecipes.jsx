@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const style = {
   modalPosition: `justify-center items-center flex fixed inset-0 z-50 outline-none`,
-  modalSize: `relative w-auto mx-20 sm:mx-5 w-full max-h-full overflow-auto`,
+  modalSize: `relative w-auto mx-5 w-full max-h-full overflow-auto`,
   modalOuterContainer: `rounded-lg shadow-lg flex flex-col w-full bg-white outline-none`,
   modalHeader: `flex items-start justify-between p-5 border-b rounded-t`,
   modalTitle: `text-3xl font-semibold`,
