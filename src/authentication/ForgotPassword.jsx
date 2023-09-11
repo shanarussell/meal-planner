@@ -3,7 +3,7 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 
 const style = {
-    mainContainer: `bg-slate-100 flex flex-col rounded shadow p-5 my-5 h-full`,
+    mainContainer: `bg-slate-200 flex flex-col rounded shadow p-5 my-5 h-full`,
     inputContainer: `flex flex-col items-center`,
     heading: `text-[#116A7B] font-bold text-lg text-center mb-3`,
     textInput: `border p-2 w-full text-lg mb-4 w-6/12`,
