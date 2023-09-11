@@ -5,9 +5,9 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase";
 
 const style = {
-  navContainer: `bg-[#116A7B] h-30 flex flex-col rounded shadow p-2 mt-5 text-white items-center justify-end md:flex-row`,
+  navContainer: `bg-[#116A7B] h-30 flex flex-col rounded shadow p-2 mt-5 text-white items-center justify-end md:flex-row md:justify-items-stretch`,
   name: `text-center mr-2`,
-  button: `h-7 bg-slate-100 rounded text-center m-2 w-full text-[#116A7B] px-3 sm:mt-2 sm:w-full md:w-1/6`,
+  button: `h-7 bg-slate-100 rounded text-center m-2 w-24 text-[#116A7B] px-3 sm:mt-2`,
 };
 
 const Navbar = ({ user }) => {
@@ -25,18 +25,18 @@ const Navbar = ({ user }) => {
             Log Out
           </div>
         ) : (
-          <div className={style.button}>
-            <Link to="/login">Log In</Link>
-          </div>
+          
+            <Link to="/login"><div className={style.button}>Log In</div></Link>
+          
         )}
         {!user && (
-          <div className={style.button}>
-            <Link to="/register">Register</Link>
-          </div>
+         
+            <Link to="/register"><div className={style.button}>Register</div></Link>
+          
         )}
-        <div className={style.button}>
-          <Link to="/">Home</Link>
-        </div>
+       
+          <Link to="/"><div className={style.button}>Home</div></Link>
+        
       </div>
     </div>
   );
