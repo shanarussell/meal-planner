@@ -17,15 +17,30 @@ const style = {
   singleRecipeImageContainer: `box-border h-36 sm:h-28 mt-2 mb-2`,
   singleRecipeTextContainer: ``,
   thumbnailImage: `h-full w-full object-cover`,
+  searchBoxContainer: `w-full max-w-xl flex mx-auto p-20 text-xl`,
+  searchBox: `w-full placeholder-gray-400 text-gray-900 p-4`,
   recipeTitle: `text-md sm:text-sm font-bold text-left text-white`,
 };
 
 const ModalViewAllRecipes = ({ setViewRecipesModal, user }) => {
   const [listAll, setListAll] = useState(true);
   const [selectedRecipe, setSelectedRecipe] = useState();
+  const [query, setQuery] = useState(""); //search
+  const { allRecipes } = useRecipes({ user });
 
-  const { allRecipes } = useRecipes({user});
-  console.log(allRecipes);
+  // Extracting recipe titles for search and converting them to lowercase for search
+  // const titles = allRecipes.map((recipe) => recipe.recipeName.toLowerCase());
+
+  // //search function
+  // function search(e){
+  //   e.preventDefault();
+  //   const queryLower = query.toLowerCase();
+  //   console.log(queryLower);
+
+  //   const matchingTitles = titles.filter((title) => title.includes(queryLower));
+
+  //   console.log("Result: " + matchingTitles);
+  // }
 
   //when a recipe is clicked, the list hides and a single recipe is shown
   const handleClick = (recipe) => {
@@ -33,22 +48,9 @@ const ModalViewAllRecipes = ({ setViewRecipesModal, user }) => {
 
     setSelectedRecipe(recipe);
   };
+  console.log(allRecipes);
 
   //lists all the recipes from the allRecipes state as divs with button styles
-  const listAllRecipes = allRecipes.map((recipe) => (
-    <div
-      className={style.singleRecipeContainer}
-      key={recipe.id}
-      onClick={() => handleClick(recipe)}
-    >
-      <div className={style.singleRecipeImageContainer}>
-        <img className={style.thumbnailImage} src={recipe.imagePath} />
-      </div>
-      <div className={style.singleRecipeTextContainer}>
-        <h3 className={style.recipeTitle}>{recipe.recipeName}</h3>
-      </div>
-    </div>
-  ));
 
   return (
     <>
@@ -61,6 +63,15 @@ const ModalViewAllRecipes = ({ setViewRecipesModal, user }) => {
                 {/*header*/}
                 <div className={style.modalHeader}>
                   <h3 className={style.modalTitle}>Recipes</h3>
+                  <div className={style.searchBoxContainer}>
+                    <input
+                      type="text"
+                      className={style.searchBox}
+                      placeholder="Search titles and ingredients"
+                      onChange={(e) => setQuery(e.target.value)}
+                      value={query}
+                    />
+                  </div>
                   <button
                     className={style.modalXButton}
                     onClick={() => setViewRecipesModal(false)}
@@ -72,7 +83,36 @@ const ModalViewAllRecipes = ({ setViewRecipesModal, user }) => {
                 <div className={style.modalTextContainer}>
                   <div className={style.greyContainer}>
                     <div className={style.recipeContainer}>
-                      {listAllRecipes}
+                      {allRecipes
+                      //controls the search feature - searches ingredients and titles
+                        .filter((item) => {
+                          return (
+                            query.toLowerCase() === "" ||
+                            item.recipeName.toLowerCase().includes(query) ||
+                            item.recipeIngredients.some((ingredient) =>
+                              ingredient.toLowerCase().includes(query)
+                            )
+                          );
+                        })
+                        .map((recipe) => (
+                          <div
+                            className={style.singleRecipeContainer}
+                            key={recipe.id}
+                            onClick={() => handleClick(recipe)}
+                          >
+                            <div className={style.singleRecipeImageContainer}>
+                              <img
+                                className={style.thumbnailImage}
+                                src={recipe.imagePath}
+                              />
+                            </div>
+                            <div className={style.singleRecipeTextContainer}>
+                              <h3 className={style.recipeTitle}>
+                                {recipe.recipeName}
+                              </h3>
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 </div>
